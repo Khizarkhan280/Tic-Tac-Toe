@@ -1,0 +1,543 @@
+:root {
+    /* ---------- Backgrounds ---------- */
+    --bg-main: linear-gradient(145deg, #050610, #081221);
+    --bg-header: rgba(12, 14, 28, 0.95);
+    --bg-shapes: rgba(20, 24, 42, 0.9);
+    --bg-turn: rgba(26, 34, 58, 0.92);
+    --bg-resetbtn: #22283f;
+    --bg-box: #0f1222;
+    --bg-footer-box: #13182e;
+    --bg-continue-btn: #22283f;
+
+    /* ---------- Text ---------- */
+    --text-default: #e8eef8;
+    --text-muted: #9fb0c6;
+    --text-white: #ffffff;
+
+    /* Player X (cross) → Electric Cyan / Teal */
+    --text-cross: #00A8E8;
+    --glow-cross-rgb: 0, 168, 232;
+
+    /* Player O (circle) → Vivid Purple */
+    --text-circle: #9B5DE5;
+    --glow-circle-rgb: 155, 93, 229;
+
+    /* Draw (neutral, muted) */
+    --text-draw: #7A8597;
+    --glow-draw-rgb: 122, 133, 151;
+
+    /* ---------- Hover States ---------- */
+    --hover-resetbtn: #2d3552;
+    --hover-box: #1A1E33;
+    /* darker navy hover */
+    --hover-continue: #3f477a;
+
+    /* ---------- Continue Button States ---------- */
+    --continue-x: #00A8E8;
+    --continue-o: #9B5DE5;
+    --continue-draw: #7A8597;
+    --continue-draw-text: #111827;
+
+    /* ---------- Shadows ---------- */
+    --shadow-header: rgba(0, 0, 0, 0.75);
+    --shadow-box: rgba(0, 0, 0, 0.7);
+    --shadow-footer: rgba(0, 0, 0, 0.7);
+    --shadow-resetbtn-border: #415077;
+
+    /* Computed text shadows */
+    --glow-cross: 0 0 12px rgba(var(--glow-cross-rgb), 0.85);
+    --glow-circle: 0 0 12px rgba(var(--glow-circle-rgb), 0.85);
+    --glow-draw: 0 0 8px rgba(var(--glow-draw-rgb), 0.4);
+    /* softer */
+}
+
+/* Reset defaults */
+html {
+    user-select: none;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: var(--bg-main);
+    color: var(--text-default);
+    min-height: 100dvh;
+}
+
+.grid_box {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    align-items: center;
+    min-height: 100dvh;
+    row-gap: 20px;
+}
+
+/* Centering utility */
+.elementCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ---------- HEADER ---------- */
+header {
+    flex-shrink: 0;
+    width: 90%;
+    height: max-content;
+    display: flex;
+    justify-content: space-evenly !important;
+    align-items: center;
+    padding:17px 30px;
+    background: var(--bg-header);
+    box-shadow: 0 2px 10px var(--shadow-header);
+    z-index: 10;
+    margin-inline: auto;
+    border-radius: 25px;
+}
+
+.shapes,
+.turn {
+    background: var(--bg-shapes);
+    border-radius: 12px;
+    padding: 8px 18px;
+    box-shadow: 0 2px 12px var(--shadow-shapes);
+}
+
+.shapes {
+    width: max-content;
+    height: max-content;
+    padding: 12px;
+}
+
+.cross {
+    color: var(--text-cross);
+    font-size: 35px;
+    text-shadow: 0 0 10px var(--glow-cross);
+}
+
+.shapes .cross {
+    margin-right: 6px;
+
+}
+
+.circle {
+    color: var(--text-circle);
+    font-size: 26px;
+    text-shadow: 0 0 10px var(--glow-circle);
+}
+
+.turn span {
+    font-weight: 600;
+    margin-left: 6px;
+    color: var(--text-turn);
+    font-size: 1.2rem;
+}
+
+.turn {
+    background: var(--bg-turn);
+    padding: 10px 20px;
+    animation: pulseCross 2s infinite;
+    width: 130px;
+    height: 55px;
+}
+
+@keyframes pulseCross {
+    0% {
+        box-shadow: 0 0 10px rgba(var(--glow-cross-rgb), 0.7);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(var(--glow-cross-rgb), 0.95);
+    }
+
+    100% {
+        box-shadow: 0 0 10px rgba(var(--glow-cross-rgb), 0.7);
+    }
+}
+
+@keyframes pulseCircle {
+    0% {
+        box-shadow: 0 0 10px rgba(var(--glow-circle-rgb), 0.7);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(var(--glow-circle-rgb), 0.95);
+    }
+
+    100% {
+        box-shadow: 0 0 10px rgba(var(--glow-circle-rgb), 0.7);
+    }
+}
+
+/* reset button floating */
+.resetbtn {
+    background: var(--bg-resetbtn);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid var(--shadow-resetbtn-border);
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.resetbtn:hover {
+    transform: rotate(90deg) scale(1.1);
+    background: var(--hover-resetbtn);
+}
+
+
+
+.resetbtn i {
+    font-size: 22px;
+    color: var(--text-default);
+}
+
+/* ---------- MAIN (Grid) ---------- */
+main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    width: 100%;
+}
+
+.resultMsg {
+    justify-self: center;
+    margin-bottom: 15px;
+}
+
+/* Big Winner Text */
+.resultMsg h1 {
+    font-size: clamp(2.5rem, 4vw, 2.8rem);
+    font-weight: 800;
+    text-align: center;
+    animation: fadePop 0.3s ease forwards;
+}
+
+.drawColor {
+    color: var(--glow-draw);
+    /* text-shadow: 0 0 10px rgba(249, 248, 113, 0.7); */
+}
+
+.lossColor h1 {
+    color: var(--text-circle);
+    text-shadow: 0 0 10px var(--glow-circle);
+}
+
+.winColor h1 {
+    color: var(--text-cross);
+    text-shadow: 0 0 10px var(--glow-cross);
+}
+
+@keyframes fadePop {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Takes the round */
+.buttons {
+    flex-direction: column;
+    animation: fadePop 0.3s ease forwards;
+}
+
+.singleLine {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.singleLine .fa-xmark {
+    font-size: clamp(2rem, 3vw, 2.4rem);
+    margin-top: 5px;
+}
+
+.singleLine .fa-circle {
+    font-size: clamp(1.5em, 3vw, 1.7rem);
+    margin-top: 2px;
+}
+
+.singleLine h1 {
+    font-size: clamp(1.7rem, 2.4vw, 2rem);
+    font-weight: 700;
+    color: var(--text-default);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
+}
+
+/* Winner colors */
+.singleLine .cross,
+.resultMsg.crossWin {
+    color: var(--text-cross);
+    text-shadow: 0 0 12px var(--glow-cross);
+}
+
+.singleLine .circle,
+.resultMsg.circleWin {
+    color: var(--text-circle);
+    text-shadow: 0 0 12px var(--glow-circle);
+}
+
+.resultMsg.tie {
+    color: var(--glow-draw);
+    text-shadow: 0 0 12px var(--glow-draw);
+}
+
+/* Continue button */
+.continueButton button {
+    padding: 14px 32px;
+    border: none;
+    border-radius: 28px;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-weight: 600;
+    color: var(--text-white);
+    background: var(--bg-continue-btn);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.continueButton button:hover {
+    transform: scale(1.07);
+    background: var(--hover-continue);
+}
+
+/* Winner highlight for button */
+.continueButton.x-win button {
+    background: var(--continue-x);
+    box-shadow: 0 0 14px var(--continue-x);
+}
+
+.continueButton.o-win button {
+    background: var(--continue-o);
+    box-shadow: 0 0 14px var(--continue-o);
+}
+
+.continueButton.tie button {
+    background: var(--continue-draw);
+    color: var(--continue-draw-text);
+    box-shadow: 0 0 14px var(--continue-draw);
+}
+
+/* ---------- MAIN CONTAINER (Board) ---------- */
+.main_container {
+    position: relative;
+    justify-self: center;
+    width: 90vw;
+    max-width: 330px;
+    aspect-ratio: 1 / 1;
+    background: var(--bg-header);
+    border-radius: 15px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 12px;
+    box-shadow: 0 0 25px var(--shadow-box);
+    grid-column: 2;
+    justify-self: center;
+    align-self: center;
+}
+
+.box {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: var(--bg-box);
+    border-radius: 10px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--text-white);
+    transition: all 0.25s ease;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+
+.box :first-child {
+    font-size: 45px;
+    margin: 0px;
+}
+
+.animation:hover {
+    background: var(--hover-box);
+    transform: scale(1.05);
+}
+
+/* ---------- FOOTER (Scoreboard) ---------- */
+
+.footer_container {
+    width: 90vw;
+    max-width: 330px;
+    background: var(--bg-header);
+    border-radius: 15px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 12px;
+    box-shadow: 0 0 25px var(--shadow-box);
+    justify-self: center;
+    align-self: center;
+}
+
+.result {
+    width: 100%;
+    height: 75px;
+    background: var(--bg-footer-box);
+    border-radius: 10px;
+    flex-direction: column;
+    justify-content: space-evenly;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+    text-align: center;
+}
+
+.result p {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.score {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--text-white);
+}
+
+/* Neon effects */
+.you_win .score {
+    color: var(--text-cross);
+    text-shadow: 0 0 8px var(--glow-cross);
+}
+
+.tie .score {
+    color: var(--glow-draw);
+    text-shadow: 0 0 8px var(--glow-draw);
+}
+
+.opponent_win .score {
+    color: var(--text-circle);
+    text-shadow: 0 0 8px var(--glow-circle);
+}
+
+.visiblity {
+    display: none;
+}
+
+.circleColor {
+    background-color: var(--text-circle)
+}
+
+.crossColor {
+    background-color: var(--text-cross);
+}
+
+.underline {
+    height: 6px;
+    width: 0;
+    /* Start with 0 width */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 20px;
+    transition: width 0.5s ease-out;
+    /* Add transition for smooth animation */
+}
+
+/* Animation for the underline */
+@keyframes underlineGrow {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 85%;
+    }
+}
+
+/* For diagonal lines */
+@keyframes diagonalGrow {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 113%;
+    }
+}
+
+/* For vertical lines */
+@keyframes verticalGrow {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 85%;
+    }
+}
+
+@media screen and (max-width:1070px) {
+    .resultMsg {
+        grid-column: 1 / 4;
+        margin-bottom: 20px;
+    }
+
+    .buttons {
+        grid-column: 2 / 3;
+        margin-block: 20px;
+    }
+
+    main {
+        grid-template-rows: auto 1fr auto;
+    }
+
+    .shapes .cross {
+        font-size: 27px;
+    }
+
+    .shapes .circle {
+        font-size: 21px;
+    }
+
+    .shapes {
+        padding: 10px;
+    }
+
+    .turn {
+        width: 109px;
+        height: 46px;
+    }
+
+    .turn span {
+        font-size: 1.1rem;
+    }
+
+    .cross {
+        font-size: 29px;
+    }
+
+    .resetbtn {
+        width: 50px;
+        height: 50px;
+    }
+
+    .resetbtn i {
+        font-size: 18px;
+    }
+
+    /* header {
+        height: 80px;
+    } */
+
+}

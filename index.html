@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="grid_box">
+        <header class="elementCenter">
+            <div class="shapes elementCenter">
+                <i class="fa-solid fa-xmark cross"></i>
+                <i class="fa-regular fa-circle circle"></i>
+            </div>
+            <div class="turn pulsePink pulseCyan elementCenter">
+                <i class="fa-solid fa-xmark cross"></i>
+                <span>Turn</span>
+            </div>
+            <div class="reset">
+                <button class="resetbtn elementCenter"><i class="fa-solid fa-rotate-right"></i></button>
+            </div>
+        </header>
+
+        <main>
+            <div class="resultMsg winColor lossColor drawColor visiblity">
+                <h1><span class="Change">Player1</span> <span>Won!</span></h1>
+            </div>
+
+            <div class="main_container">
+                <div class="underline visiblity"></div>
+                <button class="box box1 elementCenter animation"></button>
+                <button class="box box2 elementCenter animation"></button>
+                <button class="box box3 elementCenter animation"></button>
+                <button class="box box4 elementCenter animation"></button>
+                <button class="box box5 elementCenter animation"></button>
+                <button class="box box6 elementCenter animation"></button>
+                <button class="box box7 elementCenter animation"></button>
+                <button class="box box8 elementCenter animation"></button>
+                <button class="box box9 elementCenter animation"></button>
+            </div>
+
+            <div class="buttons elementCenter visiblity">
+                <div class="singleLine">
+                    <i class="fa-solid fa-xmark cross"></i>
+                    <h1>Takes The Round</h1>
+                </div>
+                <div class="continueButton"><button>Next Round</button></div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer_container elementCenter">
+                <div class="result you_win elementCenter">
+                    <p>Player1</p>
+                    <div class="score player1Score">0</div>
+                </div>
+                <div class="result tie elementCenter">
+                    <p>Draw</p>
+                    <div class="score drawScore">0</div>
+                </div>
+                <div class="result opponent_win elementCenter">
+                    <p>Player2</p>
+                    <div class="score player2Score">0</div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
