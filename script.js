@@ -4,6 +4,16 @@ const winPosition = [
   [0, 3, 6], [1, 4, 7], [2, 5, 8]
 ];
 
+
+// index.js
+if (!sessionStorage.getItem("fromHome")) {
+    // user came directly, not via home
+    window.location.replace("home.html");
+} else {
+    // clear the flag so refreshing works inside the game
+    sessionStorage.removeItem("fromHome");
+}
+
 let boxes = document.querySelectorAll(".box");
 let resetBtn = document.querySelector(".resetbtn");
 let showMsg = document.querySelector(".resultMsg");
@@ -23,6 +33,12 @@ let player2Win = false;
 let drawWin = false;
 let winnerFound = false;
 let countTurn = 0;
+let homeBtn = document.querySelector(".homebtn")
+
+homeBtn.addEventListener("click", () => {
+    window.location.replace("home.html"); 
+});
+
 
 function animateUnderline(position) {
   underline.style.animation = 'none';
@@ -259,3 +275,5 @@ let continueRound = () => {
 };
 
 continueBtn.addEventListener("click", continueRound);
+
+

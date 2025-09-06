@@ -181,14 +181,21 @@ header {
     }
 }
 
-.resetbtn {
+.headerButtons{
+    gap: 5px;
+}
+
+.resetbtn , .homebtn{
     background: var(--bg-resetbtn);
     width: 60px;
     height: 60px;
     border-radius: 50%;
     border: 2px solid var(--shadow-resetbtn-border);
+    
 }
-
+.homebtn{
+    cursor: pointer;
+}
 .resetAnimation {
     cursor: pointer;
     transition: transform 0.2s ease, background 0.2s ease;
@@ -200,7 +207,7 @@ header {
     background: var(--hover-resetbtn);
 }
 
-.resetbtn i {
+.resetbtn i , .homebtn i{
     font-size: 22px;
     color: var(--text-default);
 }

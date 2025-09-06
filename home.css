@@ -16,7 +16,7 @@
         body {
             background: var(--bg-main);
             color: var(--text-default);
-            min-height: 100vdh;
+            min-height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -103,6 +103,7 @@
             width: 100%;
             display: flex;
             margin: 10px 0;
+            gap: 8px;
         }
         
         .markBox {
@@ -116,23 +117,32 @@
             font-size: 32px;
             transition: all 0.3s ease;
             color: var(--text-default);
+            background-color: #00000014;
+            
+        
         }
         
-        .markBox:hover {
+        .crossHover:hover {
+            background: rgba(168, 191, 201, 0.05);
+        }
+        .circleHover:hover {
             background: rgba(168, 191, 201, 0.05);
         }
         
-        .markBox.active {
+        .homeCrossBtn {
             background: var(--text-default);
-            color: var(--bg-main);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+        .homeCircleBtn {
+            background: var(--text-default);
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
         }
         
-        .markBox.active .cross {
+        .homeCrossBtn .cross {
             color: var(--bg-main);
         }
         
-        .markBox.active .circle {
+        .homeCircleBtn .circle {
             color: var(--bg-main);
         }
         
