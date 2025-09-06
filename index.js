@@ -33,7 +33,7 @@ circleMark.addEventListener("click" ,
 
 playerBtn.addEventListener("click",
     () => {
-        window.location.href = "index.html"; 
+        window.location.href = "game.html"; 
     }
 )
 

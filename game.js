@@ -8,7 +8,7 @@ const winPosition = [
 // index.js
 if (!sessionStorage.getItem("fromHome")) {
     // user came directly, not via home
-    window.location.replace("home.html");
+    window.location.replace("index.html");
 } else {
     // clear the flag so refreshing works inside the game
     sessionStorage.removeItem("fromHome");
@@ -36,7 +36,7 @@ let countTurn = 0;
 let homeBtn = document.querySelector(".homebtn")
 
 homeBtn.addEventListener("click", () => {
-    window.location.replace("home.html"); 
+    window.location.replace("index.html"); 
 });
 
 
