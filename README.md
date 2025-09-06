@@ -25,18 +25,7 @@ Players can take turns as **X** and **O**, and the game automatically checks for
 <br><br>
 
 <p align="center">
-  <img width="226" height="509" alt="image" src="https://github.com/user-attachments/assets/dc74bf4e-13dd-4f6e-a551-1358bb477ed8" style="margin-right: 20px;" />
+  <img width="226" height="509" alt="image" src="https://github.com/user-attachments/assets/dc74bf4e-13dd-4f6e-a551-1358bb477ed8" style="margin-right: 40px;" />
   <img width="228" height="511" alt="image" src="https://github.com/user-attachments/assets/133e73dd-de8b-49fe-b002-339955858d28" />
 </p>
 
-## ▶️ How to Play
-
-1. Open `index.html` in your browser.
-2. Player **X** starts the game.
-3. Take turns clicking on empty boxes.
-4. The game announces the winner or declares a draw.
-5. Click **Reset** to play again.
-
----
-
-👉 Do you want me to also make a **README for your `StudyAI` project** in the same style, so your repo looks consistent?
