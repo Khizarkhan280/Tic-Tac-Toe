@@ -1,54 +1,60 @@
 :root {
     /* ---------- Backgrounds ---------- */
-    --bg-main: linear-gradient(145deg, #050610, #081221);
-    --bg-header: rgba(28, 31, 54, 0.95);
-    --bg-shapes: rgba(20, 24, 42, 0.9);
-    --bg-turn: rgba(26, 34, 58, 0.92);
-    --bg-resetbtn: #22283f;
-    --bg-box: #0f1222;
-    --bg-footer-box: #0f1222;
-    --bg-continue-btn: #22283f;
+    --bg-main: #1a2b33;
+    /* full page background */
+    --bg-header: #1f3641;
+    /* header + logo container */
+    --bg-shapes: rgba(12, 19, 26, 0.4);
+    /* XO shapes background */
+    --bg-turn: rgba(12, 19, 26, 0.4);
+    /* turn indicator background */
+    --bg-resetbtn: rgba(12, 19, 26, 0.4);
+    /* reset button background */
+    --bg-box: rgba(12, 19, 26, 0.4);
+    /* tic-tac-toe boxes (lighter than container) */
+    --bg-footer-box: #22323b;
+    /* footer scoreboard boxes */
+    --bg-continue-btn: #1f3641;
+    /* continue button background */
 
     /* ---------- Text ---------- */
-    --text-default: #e8eef8;
-    --text-muted: #9fb0c6;
+    --text-default: #ffffffe0;
+    --text-muted: #7a8597;
     --text-white: #ffffff;
 
-    /* Player X (cross) → Electric Cyan / Teal */
-    --text-cross: #00A8E8;
-    --glow-cross-rgb: 0, 168, 232;
+    /* Player X (cross) → Yellow */
+    --text-cross: #f2b237;
+    --glow-cross-rgb: 242, 178, 55;
+    /* RGB for #f2b237 */
 
-    /* Player O (circle) → Vivid Purple */
-    --text-circle: #9B5DE5;
-    --glow-circle-rgb: 155, 93, 229;
+    /* Player O (circle) → Teal */
+    --text-circle: #31c4be;
+    --glow-circle-rgb: 49, 196, 190;
+    /* RGB for #31c4be */
+
 
     /* Draw (neutral, muted) */
-    --text-draw: #7A8597;
-    --glow-draw-rgb: 122, 133, 151;
+    --text-draw: #7a8597;
 
     /* ---------- Hover States ---------- */
-    --hover-resetbtn: #2d3552;
-    --hover-box: #0e101c;
-    /* darker navy hover */
-    --hover-continue: #3f477a;
+    --hover-resetbtn: #273c48;
+    --hover-box: rgba(12, 19, 26, 0.664);
+    /* slightly darker than --bg-box */
+    --hover-continue: #2b4450;
 
     /* ---------- Continue Button States ---------- */
-    --continue-x: #00A8E8;
-    --continue-o: #9B5DE5;
-    --continue-draw: #7A8597;
+    --continue-x: #f2b237;
+    --continue-o: #31c4be;
+    --continue-draw: #7a8597;
     --continue-draw-text: #111827;
 
     /* ---------- Shadows ---------- */
-    --shadow-header: rgba(0, 0, 0, 0.75);
-    --shadow-box: rgba(0, 0, 0, 0.7);
-    --shadow-footer: rgba(0, 0, 0, 0.7);
-    --shadow-resetbtn-border: #415077;
-
-    /* Computed text shadows */
-    --glow-cross: 0 0 12px rgba(var(--glow-cross-rgb), 0.85);
-    --glow-circle: 0 0 12px rgba(var(--glow-circle-rgb), 0.85);
-    --glow-draw: 0 0 8px rgba(var(--glow-draw-rgb), 0.4);
+    --shadow-header: rgba(0, 0, 0, 0.3);
+    --shadow-box: rgba(0, 0, 0, 0.25);
+    --shadow-footer: rgba(0, 0, 0, 0.25);
+    --shadow-resetbtn-border: #2d4450;
 }
+
 
 html {
     user-select: none;
@@ -97,8 +103,8 @@ header {
     border-radius: 25px;
     flex-wrap: wrap;
     row-gap: 22px;
-        column-gap: 12px;
-        
+    column-gap: 12px;
+
 }
 
 .shapes,
@@ -182,7 +188,8 @@ header {
     border-radius: 50%;
     border: 2px solid var(--shadow-resetbtn-border);
 }
-.resetAnimation{
+
+.resetAnimation {
     cursor: pointer;
     transition: transform 0.2s ease, background 0.2s ease;
 
@@ -268,10 +275,10 @@ main {
 }
 
 .singleLine h1 {
-        font-size: clamp(1.6rem, 6vw, 2.2rem);
+    font-size: clamp(1.6rem, 6vw, 2.2rem);
     font-weight: 700;
     color: var(--text-default);
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
+    text-shadow: 0 0 8px rgb(0 0 0);
 }
 
 .singleLine .cross,
