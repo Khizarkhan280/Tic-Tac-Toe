@@ -1,6 +1,6 @@
 const winPosition = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]]
 let boxes = document.querySelectorAll(".box");
-let resetBtn = document.querySelector(".reset");
+let resetBtn = document.querySelector(".resetbtn"); // ✅ select the actual button
 let showMsg = document.querySelector(".resultMsg");
 let showButton = document.querySelector(".buttons");
 let winnerText = document.querySelector(".resultMsg");
@@ -34,7 +34,7 @@ function animateUnderline(position) {
         underline.style.animation = 'diagonalGrow 0.5s forwards';
     } else if (position[0] === 0 && position[1] === 3 && position[2] === 6 ||
         position[0] === 1 && position[1] === 4 && position[2] === 7 ||
-        position[0] === 2 && position[1] === 4 && position[2] === 8) {
+        position[0] === 2 && position[1] === 5 && position[2] === 8) {
         // Vertical lines
         underline.style.animation = 'verticalGrow 0.5s forwards';
     } else {
@@ -73,13 +73,41 @@ let resetGame = () => {
     underline.style.marginTop = "";
     underline.classList.remove("crossColor", "circleColor");
     underline.style.animation = 'none'; // Remove any animation
-
 }
 
-resetBtn.addEventListener("click", resetGame);
+// --------- FIXED RESET BUTTON HANDLING ----------
+
+// Main click handler: reset the game and prevent the hover transform from reappearing
+resetBtn.addEventListener("click", () => {
+    resetGame();
+
+    // remove focus (helpful on some mobile/desktop combos)
+    resetBtn.blur();
+
+    // temporarily block hover styles so the button returns visually to original state
+    resetBtn.classList.add("nohover");
+
+    // remove the override after the CSS transition time (0.2s) + small buffer
+    setTimeout(() => {
+        resetBtn.classList.remove("nohover");
+    }, 220);
+});
+
+// Extra safety: when pointer/touch events happen, ensure nohover is toggled appropriately
+["mousedown", "touchstart"].forEach(evt => {
+    resetBtn.addEventListener(evt, () => {
+        resetBtn.classList.add("nohover");
+    });
+});
+["mouseup", "touchend", "mouseleave"].forEach(evt => {
+    resetBtn.addEventListener(evt, () => {
+        setTimeout(() => resetBtn.classList.remove("nohover"), 220);
+    });
+});
+// ------------------------------------------------
+
 
 //Check Draw
-
 const checkDraw = () => {
     let spaceEmpty = false;
     let idx = 0;
@@ -98,7 +126,6 @@ const checkDraw = () => {
 }
 
 //Check Winner
-
 let checkWinner = () => {
     for (const position of winPosition) {
         let pos1 = boxes[position[0]].innerHTML;
@@ -200,7 +227,6 @@ const disableBox = () => {
 }
 
 //Winner Announcement
-
 let announceWinner = (pos1) => {
     showMsg.classList.remove("visiblity");
     showButton.classList.remove("visiblity");
@@ -238,8 +264,8 @@ let announceDraw = () => {
     winnerText.innerHTML = (`<h1>It's a Draw!</h1>`);
     winnerText.classList.remove("lossColor", "winColor");
     if (drawWin) {
-                drawScore.innerText = Number(drawScore.innerText) + 1
-            }
+        drawScore.innerText = Number(drawScore.innerText) + 1
+    }
 }
 
 // Continue Button
@@ -286,5 +312,3 @@ let continueRound = () => {
 }
 
 continueBtn.addEventListener("click", continueRound);
-
-
