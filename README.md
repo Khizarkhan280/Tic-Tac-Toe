@@ -25,13 +25,9 @@ Players can take turns as **X** and **O**, and the game automatically checks for
 <br><br>
 
 <p align="center">
-  <img width="226" height="509" alt="image" src="https://github.com/user-attachments/assets/dc74bf4e-13dd-4f6e-a551-1358bb477ed8" />
+  <img width="226" height="509" alt="image" src="https://github.com/user-attachments/assets/dc74bf4e-13dd-4f6e-a551-1358bb477ed8" style="margin-right: 20px;" />
   <img width="228" height="511" alt="image" src="https://github.com/user-attachments/assets/133e73dd-de8b-49fe-b002-339955858d28" />
 </p>
-
-
-
-
 
 ## ▶️ How to Play
 
