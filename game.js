@@ -108,9 +108,9 @@ let resetGame = () => {
   underline.style.marginTop = "";
   underline.classList.remove("crossColor", "circleColor");
   underline.style.animation = 'none';
-  player1MarkColor.classList.add("player1ScoreColor" , "player2ScoreColor");
-  player2MarkColor.classList.add("player1ScoreColor" , "player2ScoreColor");
-  console.log("Remove line")
+  // player1MarkColor.classList.add("player1ScoreColor" , "player2ScoreColor");
+  // player2MarkColor.classList.add("player1ScoreColor" , "player2ScoreColor");
+  // console.log("Remove line")
 };
 
 resetBtn.addEventListener("click", () => {
