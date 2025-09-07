@@ -87,7 +87,6 @@ body {
     align-items: center;
 }
 
-/* ---------- HEADER ---------- */
 header {
     flex-shrink: 0;
     width: 90%;
@@ -216,7 +215,6 @@ header {
     color: var(--text-default);
 }
 
-/* ---------- MAIN (Grid) ---------- */
 main {
     flex: 1;
     display: grid;
@@ -343,7 +341,6 @@ main {
     box-shadow: 0 0 14px var(--continue-draw);
 }
 
-/* ---------- MAIN CONTAINER (Board) ---------- */
 .main_container {
     position: relative;
     justify-self: center;
@@ -387,8 +384,6 @@ main {
     background: var(--hover-box);
     transform: scale(1.05);
 }
-
-/* ---------- FOOTER (Scoreboard) ---------- */
 
 .footer_container {
     width: 90vw;

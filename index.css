@@ -11,8 +11,6 @@
             --shadow-dark: rgba(0, 0, 0, 0.3);
         }
         
-        
-        
         body {
             background: var(--bg-main);
             color: var(--text-default);
@@ -33,7 +31,6 @@
             max-width: 460px;
         }
         
-        /* xo logo - made more subtle */
         .homeshapes {
             display: flex;
             align-items: center;
@@ -56,7 +53,6 @@
             font-size: 28px;
         }
         
-        /* main card */
         .homeFirstContainer {
             width: 100%;
             background: var(--bg-card);
@@ -66,7 +62,6 @@
             box-shadow: 0 10px 0 rgba(0, 0, 0, 0.2);
         }
         
-        /* choose mark card */
         .chooseMark {
             display: flex;
             flex-direction: column;
@@ -95,7 +90,6 @@
             opacity: 0.8;
         }
         
-        /* mark selection */
         .markSelector {
             background: var(--bg-main);
             border-radius: 10px;
@@ -118,8 +112,6 @@
             transition: all 0.3s ease;
             color: var(--text-default);
             background-color: #00000014;
-            
-        
         }
         
         .crossHover:hover {
@@ -146,7 +138,6 @@
             color: var(--bg-main);
         }
         
-        /* buttons container */
         .homeSecondContainer {
             display: flex;
             flex-direction: column;
@@ -154,7 +145,6 @@
             width: 100%;
         }
         
-        /* buttons */
         .cpuBtn,
         .playerBtn {
             padding: 16px 0;
@@ -201,7 +191,6 @@
             box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
         }
         
-        /* Responsive adjustments */
         @media (max-width: 480px) {
             .homeContainer {
                 gap: 30px;
