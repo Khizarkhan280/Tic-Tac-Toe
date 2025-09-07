@@ -55,19 +55,35 @@ let playerVsPlayer = () => {
 
 let playerVsCpu = () => {
   countTurn = 0;
-  if(playerMark == "X"){
+  if (playerMark == "X") {
     plyr1Turn = true;
   }
-  else if (playerMark == "O"){
+  else if (playerMark == "O") {
     plyr1Turn = false;
+  }
+  if (plyr1Turn) {
+    boxes.forEach((box) => {
+      box.addEventListener("click", () => {
+        box.innerHTML = `<i class="fa-solid fa-xmark cross"></i>`;
+        plyr1Turn = false;
+        resetBtn.classList.add("resetAnimation");
+        countTurn = countTurn + 1;
+        checkWinner();
+        checkDraw();
+        turn.innerHTML = `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`;
+        turn.style.animation = "pulseCircle 2s infinite";
+        box.disabled = true;
+        box.classList.remove("animation");
+      });
+    });
   }
 
 }
 
-if (CpubuttonPressed === "cpu"){
+if (CpubuttonPressed === "cpu") {
   playerVsCpu();
 }
-else if (PlayerbuttonPressed === "player"){
+else if (PlayerbuttonPressed === "player") {
   playerVsPlayer();
 }
 
@@ -170,6 +186,8 @@ const checkDraw = () => {
     announceDraw();
   }
 };
+
+
 
 let checkWinner = () => {
   for (const position of winPosition) {
