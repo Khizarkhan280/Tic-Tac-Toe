@@ -1,4 +1,13 @@
-const winPosition = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6], [0, 3, 6], [1, 4, 7], [2, 5, 8]];
+const winPosition = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8]
+];
 let boxes = document.querySelectorAll(".box");
 let resetBtn = document.querySelector(".resetbtn");
 let showMsg = document.querySelector(".resultMsg");
@@ -26,7 +35,6 @@ let player2MarkColor = document.querySelector("#Player2MarkColor")
 // Default X if nothing saved
 let playerMark = sessionStorage.getItem("playerMark") || "X";
 
-console.log("Player chose:", playerMark);
 
 if (playerMark == "X") {
   player1MarkColor.classList.remove("player2ScoreColor");
@@ -108,9 +116,6 @@ let resetGame = () => {
   underline.style.marginTop = "";
   underline.classList.remove("crossColor", "circleColor");
   underline.style.animation = 'none';
-  // player1MarkColor.classList.add("player1ScoreColor" , "player2ScoreColor");
-  // player2MarkColor.classList.add("player1ScoreColor" , "player2ScoreColor");
-  // console.log("Remove line")
 };
 
 resetBtn.addEventListener("click", () => {
@@ -233,8 +238,7 @@ let announceWinner = (pos1) => {
       player2Win = false;
       underline.classList.add("crossColor");
     winnerText.innerHTML = `<h1><span>Player1</span> <span>Won!</span></h1>`;
-    winnerText.classList.remove("lossColor", "drawColor");
-    console.log("Player1 Win")    
+    winnerText.classList.remove("lossColor", "drawColor");   
     }
     else{
       player1Win = false;
