@@ -181,21 +181,24 @@ header {
     }
 }
 
-.headerButtons{
+.headerButtons {
     gap: 5px;
 }
 
-.resetbtn , .homebtn{
+.resetbtn,
+.homebtn {
     background: var(--bg-resetbtn);
     width: 60px;
     height: 60px;
     border-radius: 50%;
     border: 2px solid var(--shadow-resetbtn-border);
-    
+
 }
-.homebtn{
+
+.homebtn {
     cursor: pointer;
 }
+
 .resetAnimation {
     cursor: pointer;
     transition: transform 0.2s ease, background 0.2s ease;
@@ -207,7 +210,8 @@ header {
     background: var(--hover-resetbtn);
 }
 
-.resetbtn i , .homebtn i{
+.resetbtn i,
+.homebtn i {
     font-size: 22px;
     color: var(--text-default);
 }
@@ -423,17 +427,17 @@ main {
     color: var(--text-white);
 }
 
-.you_win .score {
+.player1ScoreColor{
     color: var(--text-cross);
     text-shadow: 0 0 8px var(--glow-cross);
 }
 
-.tie .score {
+.drawScoreColor{
     color: var(--glow-draw);
     text-shadow: 0 0 8px var(--glow-draw);
 }
 
-.opponent_win .score {
+.player2ScoreColor {
     color: var(--text-circle);
     text-shadow: 0 0 8px var(--glow-circle);
 }
