@@ -1,12 +1,12 @@
 const winPosition = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 4, 8],
-        [2, 4, 6],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8]
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8]
 ];
 let boxes = document.querySelectorAll(".box");
 let resetBtn = document.querySelector(".resetbtn");
@@ -28,13 +28,59 @@ let drawWin = false;
 let winnerFound = false;
 let countTurn = 0;
 let homeBtn = document.querySelector(".homebtn");
-let player1MarkColor = document.querySelector("#Player1MarkColor")
-let drawMarkColor = document.querySelector("#drawMarkColor")
-let player2MarkColor = document.querySelector("#Player2MarkColor")
-
-// Default X if nothing saved
+let player1MarkColor = document.querySelector("#Player1MarkColor");
+let drawMarkColor = document.querySelector("#drawMarkColor");
+let player2MarkColor = document.querySelector("#Player2MarkColor");
 let playerMark = sessionStorage.getItem("playerMark") || "X";
+let CpubuttonPressed = sessionStorage.getItem("cpubutton");
+let PlayerbuttonPressed = sessionStorage.getItem("playerbutton");
 
+let playerVsPlayer = () => {
+  boxes.forEach((box) => {
+    box.addEventListener("click", () => {
+      if (plyr1Turn) {
+        box.innerHTML = `<i class="fa-solid fa-xmark cross"></i>`;
+        plyr1Turn = false;
+        resetBtn.classList.add("resetAnimation");
+        countTurn = countTurn + 1;
+        checkWinner();
+        checkDraw();
+        turn.innerHTML = `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`;
+        turn.style.animation = "pulseCircle 2s infinite";
+      } else {
+        box.innerHTML = `<i class="fa-regular fa-circle circle"></i>`;
+        plyr1Turn = true;
+        resetBtn.classList.add("resetAnimation");
+        countTurn = countTurn + 1;
+        checkWinner();
+        checkDraw();
+        turn.innerHTML = `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`;
+        turn.style.animation = "pulseCross 2s infinite";
+      }
+      box.disabled = true;
+      box.classList.remove("animation");
+    });
+  });
+}
+
+let playerVsCpu = () => {
+  countTurn = 0;
+  if(playerMark == "X"){
+    plyr1Turn = true;
+  }
+  else if (playerMark == "O"){
+    plyr1Turn = false;
+  }
+
+
+}
+
+if (CpubuttonPressed === "cpu"){
+  playerVsCpu();
+}
+else if (PlayerbuttonPressed === "player"){
+  playerVsPlayer();
+}
 
 if (playerMark == "X") {
   player1MarkColor.classList.remove("player2ScoreColor");
@@ -45,41 +91,35 @@ else {
   player2MarkColor.classList.remove("player2ScoreColor");
 }
 
-
-
 //Force to startfrom index.html
 if (!sessionStorage.getItem("fromHome")) {
-    // user came directly, not via home
-    window.location.replace("index.html");
+  // user came directly, not via home
+  window.location.replace("index.html");
 } else {
-    // clear the flag so refreshing works inside the game
-    sessionStorage.removeItem("fromHome");
+  // clear the flag so refreshing works inside the game
+  sessionStorage.removeItem("fromHome");
 }
 
-
-
 homeBtn.addEventListener("click", () => {
-  window.location.replace("index.html"); 
+  window.location.replace("index.html");
   resetGame();
 });
-
 
 function animateUnderline(position) {
   underline.style.animation = 'none';
   underline.offsetHeight;
   if ((position[0] === 0 && position[1] === 4 && position[2] === 8) ||
-      (position[0] === 2 && position[1] === 4 && position[2] === 6)) {
+    (position[0] === 2 && position[1] === 4 && position[2] === 6)) {
     underline.style.animation = 'diagonalGrow 0.5s forwards';
-  } 
+  }
   else if ((position[0] === 0 && position[1] === 3 && position[2] === 6) ||
-             (position[0] === 1 && position[1] === 4 && position[2] === 7) ||
-             (position[0] === 2 && position[1] === 5 && position[2] === 8)) {
+    (position[0] === 1 && position[1] === 4 && position[2] === 7) ||
+    (position[0] === 2 && position[1] === 5 && position[2] === 8)) {
     underline.style.animation = 'verticalGrow 0.5s forwards';
   } else {
     underline.style.animation = 'underlineGrow 0.5s forwards';
   }
 }
-
 
 let RestartReset = () => {
   if (countTurn == 0) {
@@ -194,31 +234,6 @@ let checkWinner = () => {
   }
 };
 
-boxes.forEach((box) => {
-  box.addEventListener("click", () => {
-    if (plyr1Turn) {
-      box.innerHTML = `<i class="fa-solid fa-xmark cross"></i>`;
-      plyr1Turn = false;
-      resetBtn.classList.add("resetAnimation");
-      countTurn = countTurn + 1;
-      checkWinner();
-      checkDraw();
-      turn.innerHTML = `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`;
-      turn.style.animation = "pulseCircle 2s infinite";
-    } else {
-      box.innerHTML = `<i class="fa-regular fa-circle circle"></i>`;
-      plyr1Turn = true;
-      resetBtn.classList.add("resetAnimation");
-      countTurn = countTurn + 1;
-      checkWinner();
-      checkDraw();
-      turn.innerHTML = `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`;
-      turn.style.animation = "pulseCross 2s infinite";
-    }
-    box.disabled = true;
-    box.classList.remove("animation");
-  });
-});
 
 const disableBox = () => {
   for (const box of boxes) {
@@ -233,35 +248,35 @@ let announceWinner = (pos1) => {
   disableBox();
   continueText.innerHTML = `${pos1} <h1>Takes The Round</h1>`;
   if (pos1.includes("fa-xmark")) {
-    if (playerMark === "X"){
+    if (playerMark === "X") {
       player1Win = true;
       player2Win = false;
       underline.classList.add("crossColor");
-    winnerText.innerHTML = `<h1><span>Player1</span> <span>Won!</span></h1>`;
-    winnerText.classList.remove("lossColor", "drawColor");   
+      winnerText.innerHTML = `<h1><span>Player1</span> <span>Won!</span></h1>`;
+      winnerText.classList.remove("lossColor", "drawColor");
     }
-    else{
+    else {
       player1Win = false;
       player2Win = true;
       underline.classList.add("crossColor");
-    winnerText.innerHTML = `<h1><span>Player2</span> <span>Won!</span></h1>`;
-    winnerText.classList.remove("lossColor", "drawColor");
+      winnerText.innerHTML = `<h1><span>Player2</span> <span>Won!</span></h1>`;
+      winnerText.classList.remove("lossColor", "drawColor");
     }
-  } 
+  }
   else if (pos1.includes("fa-circle")) {
-    if (playerMark === "O"){
+    if (playerMark === "O") {
       player1Win = true;
       player2Win = false;
       underline.classList.add("circleColor");
-    winnerText.innerHTML = `<h1><span>Player1</span> <span>Won!</span></h1>`;
-    winnerText.classList.remove("winColor", "drawColor");
+      winnerText.innerHTML = `<h1><span>Player1</span> <span>Won!</span></h1>`;
+      winnerText.classList.remove("winColor", "drawColor");
     }
-    else{
+    else {
       player2Win = true;
       player1Win = false;
       underline.classList.add("circleColor");
-    winnerText.innerHTML = `<h1><span>Player2</span> <span>Won!</span></h1>`;
-    winnerText.classList.remove("winColor", "drawColor");
+      winnerText.innerHTML = `<h1><span>Player2</span> <span>Won!</span></h1>`;
+      winnerText.classList.remove("winColor", "drawColor");
     }
   }
 
@@ -321,9 +336,9 @@ let continueRound = () => {
     turn.style.animation = "pulseCross 2s infinite";
   }
 
-  
-  
-  
+
+
+
 };
 
 continueBtn.addEventListener("click", continueRound);
@@ -340,27 +355,3 @@ continueBtn.addEventListener("click", continueRound);
 
 
 
-// let announceWinner = (pos1) => {
-//   showMsg.classList.remove("visiblity");
-//   showButton.classList.remove("visiblity");
-//   disableBox();
-//   continueText.innerHTML = `${pos1} <h1>Takes The Round</h1>`;
-//   if (pos1.includes("fa-xmark")) {
-//     underline.classList.add("crossColor");
-//     winnerText.innerHTML = `<h1><span>Player1</span> <span>Won!</span></h1>`;
-//     winnerText.classList.remove("lossColor", "drawColor");
-//     player1Win = true;
-//   } else if (pos1.includes("fa-circle")) {
-//     underline.classList.add("circleColor");
-//     winnerText.innerHTML = `<h1><span>Player2</span> <span>Won!</span></h1>`;
-//     winnerText.classList.remove("winColor", "drawColor");
-//     player2Win = true;
-//   }
-//   if (player1Win) {
-//     player1Score.innerText = Number(player1Score.innerText) + 1;
-//   } else {
-//     if (player2Win) {
-//       player2Score.innerText = Number(player2Score.innerText) + 1;
-//     }
-//   }
-// };

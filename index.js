@@ -1,13 +1,36 @@
 let cpuBtn = document.querySelector(".cpuBtn");
 let playerBtn = document.querySelector(".playerBtn");
+
+
+let vsCpuBtn = document.querySelector(".cpuBtn");
+let vsPlayerBtn = document.querySelector(".playerBtn");
 let crossMark = document.querySelector(".crossMark");
 let circleMark = document.querySelector(".circleMark");
 
-// Allow User to enter in the game 
-playerBtn.addEventListener("click", () => {
-    sessionStorage.setItem("fromHome", "true");
-    window.location.href = "index.html";
+// Select player mark
+crossMark.addEventListener("click", () => {
+    sessionStorage.setItem("playerMark", "X");
 });
+circleMark.addEventListener("click", () => {
+    sessionStorage.setItem("playerMark", "O");
+});
+
+// New game vs CPU
+vsCpuBtn.addEventListener("click", () => {
+    sessionStorage.setItem("fromHome", "true");
+    sessionStorage.setItem("cpubutton", "cpu");
+    sessionStorage.removeItem("playerbutton"); // remove player residue
+    window.location.href = "game.html";
+});
+// New game vs Plaer
+vsPlayerBtn.addEventListener("click", () => {
+    sessionStorage.setItem("fromHome", "true");
+    sessionStorage.setItem("playerbutton", "player");
+    sessionStorage.removeItem("cpubutton"); // remove CPU residue
+    window.location.href = "game.html";
+});
+
+
 
 
 crossMark.addEventListener("click",
