@@ -1,75 +1,77 @@
+const winPosition = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8]
+];
+
+
 const trickPatterns = {
-    drawCheck: [
-        //drawCheck
-    ],
+  winPosition: [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8]
 
-    winPosition: [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 4, 8],
-        [2, 4, 6],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8]
+    // Win : Any 2 and opponent dont have last one
+    // Block : any 2 
+  ],
 
-        // Win : Any 2 and opponent dont have last one
-        // Block : any 2 
-    ],
+  // Fork opportunities (create 2 winning threats at once)
+  forks: [
+    // Opposite corners taken
+    [0, 8], // top-left & bottom-right
+    [2, 6], // top-right & bottom-left
+    // Corner + side that leads to fork
+    [0, 5], // top-left + mid-right
+    [2, 3], // top-right + mid-left
+    [6, 1], // bottom-left + top-middle
+    [8, 1], // bottom-right + top-middle
+  ],
 
-    // Fork opportunities (create 2 winning threats at once)
-    forks: [
-        // Opposite corners taken
-        [0, 8], // top-left & bottom-right
-        [2, 6], // top-right & bottom-left
-        // Corner + side that leads to fork
-        [0, 5], // top-left + mid-right
-        [2, 3], // top-right + mid-left
-        [6, 1], // bottom-left + top-middle
-        [8, 1], // bottom-right + top-middle
-    ],
+  // Blocking opponent's tricks
+  blockForks: [
+    [0, 8], // if opponent has opposite corners
+    [2, 6], // if opponent has opposite corners
+    [1, 3], // if opponent starts with two adjacent sides
 
-    // Blocking opponent's tricks
-    blockForks: [
-        [0, 8], // if opponent has opposite corners
-        [2, 6], // if opponent has opposite corners
-        [1, 3], // if opponent starts with two adjacent sides
+    // call blockForkMove
+  ],
+  blockForkMove: [
+    //Random
+    [1],
+    [3],
+    [5],
+    [7]
+  ],
 
-        // call blockForkMove
-    ],
-    blockForkMove: [
-        //Random
-        [1],
-        [3],
-        [5],
-        [7]
-    ],
+  // Strong positions to prioritize
+  strategic: [
+    [4],       // center control
+    [0, 8], [2, 6],    // opposite corners
+    [0, 2, 8], // 2 corners + center (deadly trap setup)
+    [2, 4, 6], // diagonal + corner
+    [0, 4, 8], // diagonal + corner
 
-    // Strong positions to prioritize
-    strategic: [
-        [4],       // center control
-        [0, 8], [2, 6],    // opposite corners
-        [0, 2, 8], // 2 corners + center (deadly trap setup)
-        [2, 4, 6], // diagonal + corner
-        [0, 4, 8], // diagonal + corner
+    //Random
+  ],
+  EmptyBox: [
+    [0, 2, 6, 8],
+    [1, 3, 5, 7]
 
-        //Random
-    ],
-    EmptyBox: [
-        [0, 2, 6, 8],
-        [1, 3, 5, 7]
-
-        // Random
-    ]
+    // Random
+  ]
 };
 
 
-
-
-let vsCpu = () => {
-    console.log("Cpu logic");
-
-} 
 
 
 
