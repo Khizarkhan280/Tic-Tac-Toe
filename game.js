@@ -62,41 +62,6 @@ let playerVsCpu = () => {
   else if (playerMark == "O") {
     plyr1Turn = false;
   }
-
-if (plyr1Turn) {
-  boxes.forEach((box) => {
-    box.addEventListener("click", () => {
-      box.innerHTML = `<i class="fa-solid fa-xmark cross"></i>`;
-      plyr1Turn = false;
-      resetBtn.classList.add("resetAnimation");
-      countTurn = countTurn + 1;
-      checkWinner();
-      checkDraw();
-      turn.innerHTML = `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`;
-      turn.style.animation = "pulseCircle 2s infinite";
-      const index = box.dataset.index;
-      playerMoves.push(parseInt(index));
-      box.disabled = true;
-      box.classList.remove("animation");
-    });
-  });
-}
-
-  // boxes.forEach((box) => {
-  //   if (plyr1Turn == false) {
-  //     box.innerHTML = `<i class="fa-regular fa-circle circle"></i>`;
-  //     plyr1Turn = true;
-  //     resetBtn.classList.add("resetAnimation");
-  //     countTurn = countTurn + 1;
-  //     checkWinner();
-  //     checkDraw();
-  //     turn.innerHTML = `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`;
-  //     turn.style.animation = "pulseCross 2s infinite";
-  //     const index = box.dataset.index;
-  //     cpuMoves.push(parseInt(index));
-  //     console.log("CPU Moves:", cpuMoves);
-  //   }
-  // });
 }
 
 if (CpubuttonPressed === "cpu") {

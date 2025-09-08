@@ -1,9 +1,6 @@
 let playerMoves = [];
 let cpuMoves = [];
 
-
-// Win : Any 2 and opponent dont have last one
-// Block : any 2 
 const winPosition = [
   [0, 1, 2],
   [3, 4, 5],
@@ -15,58 +12,14 @@ const winPosition = [
   [2, 5, 8]
 ];
 
-// Fork opportunities (create 2 winning threats at once)
-forks = [
-  // Opposite corners taken
-  [0, 8], // top-left & bottom-right
-  [2, 6], // top-right & bottom-left
-  // Corner + side that leads to fork
-  [0, 5], // top-left + mid-right
-  [2, 3], // top-right + mid-left
-  [6, 1], // bottom-left + top-middle
-  [8, 1], // bottom-right + top-middle
+const forks = [
+  [0, 8], // opposite corners
+  [2, 6], // opposite corners
+  [0, 5],
+  [2, 3],
+  [6, 1],
+  [8, 1]
 ];
-
-
-// Blocking opponent's tricks
-blockForks = [
-  [0, 8], // if opponent has opposite corners
-  [2, 6], // if opponent has opposite corners
-  [1, 3], // if opponent starts with two adjacent sides
-
-  // call blockForkMove
-];
-
-blockForkMove = [
-  //Random
-  [1],
-  [3],
-  [5],
-  [7]
-];
-
-
-// Strong positions to prioritize
-strategic = [
-  [4],       // center control
-  [0, 8], [2, 6],    // opposite corners
-  [0, 2, 8], // 2 corners + center (deadly trap setup)
-  [2, 4, 6], // diagonal + corner
-  [0, 4, 8], // diagonal + corner
-
-  //Random
-];
-
-
-
-EmptyBox = [
-  [0, 2, 6, 8],
-  [1, 3, 5, 7]
-
-  // Random
-];
-
-
 
 const checkDraw = () => {
   let spaceEmpty = false;
@@ -83,9 +36,6 @@ const checkDraw = () => {
     announceDraw();
   }
 };
-
-
-
 
 let checkWinner = () => {
   for (const position of winPosition) {
@@ -142,23 +92,6 @@ let checkWinner = () => {
 
 
 
-let checkFork = () => {
-  boxes.forEach((box) => {
-    box.addEventListener("click", () => {
-      for (const fork of forks) {
-        let pos1 = boxes[fork[0]].innerHTML;
-        let pos2 = boxes[fork[1]].innerHTML;
-
-        if (pos1 != "" && pos2 == "") {
-          console.log("Fork available at: ", fork[1]);
-        }
-        else if (pos1 == "" && pos2 != "") {
-          console.log("Fork available at: ", fork[0]);
-        }
-      }
-    })
-  });
-}
 
 
 
