@@ -7,16 +7,16 @@ let continueText = document.querySelector(".singleLine");
 let turn = document.querySelector(".turn");
 let plyr1Turn = true;
 let firstTurnPlyr1 = true;
-let player1Score = document.querySelector(".player1Score");
-let player2Score = document.querySelector(".player2Score");
-let drawScore = document.querySelector(".drawScore");
-let continueBtn = document.querySelector(".continueButton");
-let underline = document.querySelector(".underline");
 let player1Win = false;
 let player2Win = false;
 let drawWin = false;
 let winnerFound = false;
 let countTurn = 0;
+let player1Score = document.querySelector(".player1Score");
+let player2Score = document.querySelector(".player2Score");
+let drawScore = document.querySelector(".drawScore");
+let continueBtn = document.querySelector(".continueButton");
+let underline = document.querySelector(".underline");
 let homeBtn = document.querySelector(".homebtn");
 let player1MarkColor = document.querySelector("#Player1MarkColor");
 let drawMarkColor = document.querySelector("#drawMarkColor");
@@ -53,6 +53,7 @@ let playerVsPlayer = () => {
 };
 
 // ---------- NEW: CPU HELPER FUNCTIONS ----------
+
 function makeMove(index, symbol) {
   let box = boxes[index];
   if (!box.disabled) {
@@ -76,13 +77,11 @@ function cpuMove() {
     if (!box.disabled) {
       emptyBoxes.push(idx);
     }
-
   });
 
   if (emptyBoxes.length === 0) {
     return;
   }
-
 
   let choice = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
   let cpuSymbol = playerMark === "X" ? "O" : "X";
@@ -99,6 +98,7 @@ function cpuMove() {
 }
 
 // ---------- Player vs CPU ----------
+
 let playerVsCpu = () => {
   countTurn = 0;
   plyr1Turn = playerMark === "X";
@@ -118,12 +118,14 @@ let playerVsCpu = () => {
   });
 
   // If player chose "O", CPU starts first
+
   if (playerMark === "O") {
     setTimeout(cpuMove, 500);
   }
 };
 
 // ---------- Mode Selection ----------
+
 if (CpubuttonPressed === "cpu") {
   playerVsCpu();
 } else if (PlayerbuttonPressed === "player") {
@@ -131,6 +133,7 @@ if (CpubuttonPressed === "cpu") {
 }
 
 // ---------- UI Adjustments ----------
+
 if (playerMark == "X") {
   player1MarkColor.classList.remove("player2ScoreColor");
   player2MarkColor.classList.remove("player1ScoreColor");
@@ -140,6 +143,7 @@ if (playerMark == "X") {
 }
 
 // Force to start from index.html
+
 if (!sessionStorage.getItem("fromHome")) {
   window.location.replace("index.html");
 } else {
@@ -180,15 +184,17 @@ let resetGame = () => {
   plyr1Turn = true;
   showButton.classList.add("visiblity");
   showMsg.classList.add("visiblity");
+
   boxes.forEach((box) => {
     box.classList.add("animation");
     box.innerHTML = "";
     box.disabled = false;
   });
+  
   winnerText.classList.add("winColor", "lossColor", "drawColor");
   turn.innerHTML = `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`;
-  winnerFound = false;
   turn.style.animation = "pulseCross 2s infinite";
+  winnerFound = false;
   player1Win = false;
   player2Win = false;
   drawWin = false;
