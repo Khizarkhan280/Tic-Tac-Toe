@@ -25,45 +25,74 @@ let playerMark = sessionStorage.getItem("playerMark") || "X";
 let CpubuttonPressed = sessionStorage.getItem("cpubutton");
 let PlayerbuttonPressed = sessionStorage.getItem("playerbutton");
 
+/* ------------------------
+   NEW FUNCTION: makeMove
+------------------------ */
+function makeMove(box) {
+  if (plyr1Turn) {
+    box.innerHTML = `<i class="fa-solid fa-xmark cross"></i>`;
+    plyr1Turn = false;
+    turn.innerHTML = `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`;
+    turn.style.animation = "pulseCircle 2s infinite";
+  } else {
+    box.innerHTML = `<i class="fa-regular fa-circle circle"></i>`;
+    plyr1Turn = true;
+    turn.innerHTML = `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`;
+    turn.style.animation = "pulseCross 2s infinite";
+  }
+
+  resetBtn.classList.add("resetAnimation");
+  countTurn++;
+  checkWinner();
+  checkDraw();
+  box.disabled = true;
+  box.classList.remove("animation");
+}
+
+/* ------------------------
+   CPU RANDOM MOVE
+------------------------ */
+function cpuMove() {
+  let availableBoxes = [...boxes].filter(box => !box.disabled);
+  if (availableBoxes.length === 0) return;
+
+  let randomBox = availableBoxes[Math.floor(Math.random() * availableBoxes.length)];
+
+  setTimeout(() => {
+    makeMove(randomBox);
+  }, 500);
+}
+
+/* ------------------------
+   PLAYER VS PLAYER
+------------------------ */
 let playerVsPlayer = () => {
   boxes.forEach((box) => {
     box.addEventListener("click", () => {
-      if (plyr1Turn) {
-        box.innerHTML = `<i class="fa-solid fa-xmark cross"></i>`;
-        plyr1Turn = false;
-        resetBtn.classList.add("resetAnimation");
-        countTurn = countTurn + 1;
-        checkWinner();
-        checkDraw();
-        turn.innerHTML = `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`;
-        turn.style.animation = "pulseCircle 2s infinite";
-
-      } else {
-        box.innerHTML = `<i class="fa-regular fa-circle circle"></i>`;
-        plyr1Turn = true;
-        resetBtn.classList.add("resetAnimation");
-        countTurn = countTurn + 1;
-        checkWinner();
-        checkDraw();
-        turn.innerHTML = `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`;
-        turn.style.animation = "pulseCross 2s infinite";
-      }
-      box.disabled = true;
-      box.classList.remove("animation");
+      makeMove(box);
     });
   });
-}
+};
 
+/* ------------------------
+   PLAYER VS CPU
+------------------------ */
 let playerVsCpu = () => {
-  countTurn = 0;
-  if (playerMark == "X") {
-    plyr1Turn = true;
-  }
-  else if (playerMark == "O") {
-    plyr1Turn = false;
-  }
-}
+  boxes.forEach((box) => {
+    box.addEventListener("click", () => {
+      if (!plyr1Turn) return; // only allow when it's player's turn
+      makeMove(box);
 
+      if (!winnerFound) {
+        cpuMove();
+      }
+    });
+  });
+};
+
+/* ------------------------
+   GAME MODE CHECK
+------------------------ */
 if (CpubuttonPressed === "cpu") {
   playerVsCpu();
 }
@@ -82,10 +111,8 @@ else {
 
 //Force to startfrom index.html
 if (!sessionStorage.getItem("fromHome")) {
-  // user came directly, not via home
   window.location.replace("index.html");
 } else {
-  // clear the flag so refreshing works inside the game
   sessionStorage.removeItem("fromHome");
 }
 
@@ -93,6 +120,10 @@ homeBtn.addEventListener("click", () => {
   window.location.replace("index.html");
   resetGame();
 });
+
+/* ------------------------
+   (Your reset/winner/draw code stays the same)
+------------------------ */
 
 function animateUnderline(position) {
   underline.style.animation = 'none';
@@ -154,12 +185,6 @@ resetBtn.addEventListener("click", () => {
   }
   resetGame();
 });
-
-
-
-
-
-
 
 const disableBox = () => {
   for (const box of boxes) {
@@ -261,23 +286,6 @@ let continueRound = () => {
     turn.innerHTML = `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`;
     turn.style.animation = "pulseCross 2s infinite";
   }
-
-
-
-
 };
 
 continueBtn.addEventListener("click", continueRound);
-
-
-
-
-
-
-
-
-
-
-
-
-
