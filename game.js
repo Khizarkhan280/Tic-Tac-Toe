@@ -24,6 +24,7 @@ let player2MarkColor = document.querySelector("#Player2MarkColor");
 let playerMark = sessionStorage.getItem("playerMark") || "X";
 let CpubuttonPressed = sessionStorage.getItem("cpubutton");
 let PlayerbuttonPressed = sessionStorage.getItem("playerbutton");
+let cpuModeStarter = "player"; // Can be "player" or "cpu"
 
 // Force to start from index.html
 
@@ -189,34 +190,60 @@ function cpuMove() {
     playerMark === "X" ? "pulseCross 2s infinite" : "pulseCircle 2s infinite";
 }
 
+function updateTurnIndicator() {
+  if (plyr1Turn) {
+    turn.innerHTML = playerMark === "X"
+      ? `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`
+      : `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`;
+    turn.style.animation = playerMark === "X"
+      ? "pulseCross 2s infinite"
+      : "pulseCircle 2s infinite";
+  } else {
+    const cpuSymbol = playerMark === "X" ? "O" : "X";
+    turn.innerHTML = cpuSymbol === "X"
+      ? `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`
+      : `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`;
+    turn.style.animation = cpuSymbol === "X"
+      ? "pulseCross 2s infinite"
+      : "pulseCircle 2s infinite";
+  }
+}
+
 
 let playerVsCpu = () => {
+  // Determine who starts based on player mark and current round starter
+  if (playerMark === "X") {
+    plyr1Turn = (cpuModeStarter === "player");
+  } else {
+    plyr1Turn = (cpuModeStarter === "cpu");
+  }
+
+  // Update turn indicator
+  updateTurnIndicator();
+
+  // If CPU starts, make its move
+  if (!plyr1Turn) {
+    setTimeout(cpuMove, 500);
+  }
+
   boxes.forEach((box, idx) => {
     box.addEventListener("click", () => {
+      // Prevent clicking during CPU's turn or when game is over
       if (!plyr1Turn || box.disabled || winnerFound) return;
 
       // Player move
       makeMove(idx, playerMark);
 
-      plyr1Turn = false; // CPU's turn
-      turn.innerHTML =
-        playerMark === "X"
-          ? `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`
-          : `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`;
-      turn.style.animation =
-        playerMark === "X" ? "pulseCircle 2s infinite" : "pulseCross 2s infinite";
+      // Check if game is over after player's move
+      if (!winnerFound && !drawWin) {
+        plyr1Turn = false;
+        updateTurnIndicator();
 
-      if (!winnerFound) {
-        setTimeout(cpuMove, 400); // CPU moves after 0.5s
+        // CPU moves after a short delay
+        setTimeout(cpuMove, 500);
       }
     });
   });
-
-  // CPU starts first if player chose "O"
-  if (playerMark === "O") {
-    plyr1Turn = false;
-    setTimeout(cpuMove, 400);
-  }
 };
 
 // ---------- Mode Selection ----------
@@ -282,6 +309,30 @@ let resetGame = () => {
   underline.style.marginTop = "";
   underline.classList.remove("crossColor", "circleColor");
   underline.style.animation = "none";
+
+  // Reset the starting turn for CPU mode
+  if (CpubuttonPressed === "cpu") {
+    cpuModeStarter = "player"; // Reset to player starting
+
+    if (playerMark === "X") {
+      plyr1Turn = true; // Player (X) goes first
+    } else {
+      plyr1Turn = false; // CPU (X) goes first
+    }
+
+    updateTurnIndicator();
+
+    // If CPU starts, make its move
+    if (!plyr1Turn) {
+      setTimeout(cpuMove, 500);
+    }
+  } else {
+    // Player vs Player logic
+    plyr1Turn = true;
+    firstTurnPlyr1 = true;
+    turn.innerHTML = `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`;
+    turn.style.animation = "pulseCross 2s infinite";
+  }
 };
 
 resetBtn.addEventListener("click", () => {
@@ -358,19 +409,19 @@ let announceDraw = () => {
 let continueRound = () => {
   showButton.classList.add("visiblity");
   showMsg.classList.add("visiblity");
-  
+
   for (const box of boxes) {
     box.classList.add("animation");
     box.innerHTML = "";
     box.disabled = false;
   }
-  
+
   winnerText.classList.add("winColor", "lossColor", "drawColor");
   winnerFound = false;
   player1Win = false;
   player2Win = false;
   drawWin = false;
-  
+
   underline.classList.add("visiblity");
   underline.style.transform = "translateX(-50%)";
   underline.style.top = "";
@@ -379,23 +430,26 @@ let continueRound = () => {
   underline.style.marginTop = "";
   underline.classList.remove("crossColor", "circleColor");
   underline.style.animation = "none";
-  
+
   // Reset turn based on game mode and player mark
   if (CpubuttonPressed === "cpu") {
-    // CPU mode logic
+    // Alternate who starts each round
+    cpuModeStarter = cpuModeStarter === "player" ? "cpu" : "player";
+
     if (playerMark === "X") {
-      plyr1Turn = true; // Player (X) goes first
-      turn.innerHTML = `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`;
-      turn.style.animation = "pulseCross 2s infinite";
+      plyr1Turn = (cpuModeStarter === "player");
     } else {
-      plyr1Turn = false; // CPU (X) goes first
-      turn.innerHTML = `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`;
-      turn.style.animation = "pulseCircle 2s infinite";
-      // CPU makes the first move after a short delay
-      setTimeout(cpuMove, 400);
+      plyr1Turn = (cpuModeStarter === "cpu");
+    }
+
+    updateTurnIndicator();
+
+    // If CPU starts, make its move
+    if (!plyr1Turn) {
+      setTimeout(cpuMove, 500);
     }
   } else {
-    // Player vs Player mode logic
+    // Player vs Player logic (keep existing)
     if (firstTurnPlyr1) {
       plyr1Turn = false;
       firstTurnPlyr1 = false;
