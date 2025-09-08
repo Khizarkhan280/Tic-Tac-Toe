@@ -25,91 +25,121 @@ let playerMark = sessionStorage.getItem("playerMark") || "X";
 let CpubuttonPressed = sessionStorage.getItem("cpubutton");
 let PlayerbuttonPressed = sessionStorage.getItem("playerbutton");
 
-/* ------------------------
-   NEW FUNCTION: makeMove
------------------------- */
-function makeMove(box) {
-  if (plyr1Turn) {
-    box.innerHTML = `<i class="fa-solid fa-xmark cross"></i>`;
-    plyr1Turn = false;
-    turn.innerHTML = `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`;
-    turn.style.animation = "pulseCircle 2s infinite";
-  } else {
-    box.innerHTML = `<i class="fa-regular fa-circle circle"></i>`;
-    plyr1Turn = true;
-    turn.innerHTML = `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`;
-    turn.style.animation = "pulseCross 2s infinite";
-  }
-
-  resetBtn.classList.add("resetAnimation");
-  countTurn++;
-  checkWinner();
-  checkDraw();
-  box.disabled = true;
-  box.classList.remove("animation");
-}
-
-/* ------------------------
-   CPU RANDOM MOVE
------------------------- */
-function cpuMove() {
-  let availableBoxes = [...boxes].filter(box => !box.disabled);
-  if (availableBoxes.length === 0) return;
-
-  let randomBox = availableBoxes[Math.floor(Math.random() * availableBoxes.length)];
-
-  setTimeout(() => {
-    makeMove(randomBox);
-  }, 500);
-}
-
-/* ------------------------
-   PLAYER VS PLAYER
------------------------- */
 let playerVsPlayer = () => {
   boxes.forEach((box) => {
     box.addEventListener("click", () => {
-      makeMove(box);
+      if (box.disabled) return;
+
+      if (plyr1Turn) {
+        box.innerHTML = `<i class="fa-solid fa-xmark cross"></i>`;
+        plyr1Turn = false;
+        turn.innerHTML = `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`;
+        turn.style.animation = "pulseCircle 2s infinite";
+      } else {
+        box.innerHTML = `<i class="fa-regular fa-circle circle"></i>`;
+        plyr1Turn = true;
+        turn.innerHTML = `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`;
+        turn.style.animation = "pulseCross 2s infinite";
+      }
+
+      box.disabled = true;
+      box.classList.remove("animation");
+      resetBtn.classList.add("resetAnimation");
+      countTurn++;
+      checkWinner();
+      checkDraw();
     });
   });
 };
 
-/* ------------------------
-   PLAYER VS CPU
------------------------- */
+// ---------- NEW: CPU HELPER FUNCTIONS ----------
+function makeMove(index, symbol) {
+  let box = boxes[index];
+  if (!box.disabled) {
+    if (symbol === "X") {
+      box.innerHTML = `<i class="fa-solid fa-xmark cross"></i>`;
+    } else {
+      box.innerHTML = `<i class="fa-regular fa-circle circle"></i>`;
+    }
+    box.disabled = true;
+    box.classList.remove("animation");
+    countTurn++;
+    resetBtn.classList.add("resetAnimation");
+    checkWinner();
+    checkDraw();
+  }
+}
+
+function cpuMove() {
+  let emptyBoxes = [];
+  boxes.forEach((box, idx) => {
+    if (!box.disabled) {
+      emptyBoxes.push(idx);
+    }
+
+  });
+
+  if (emptyBoxes.length === 0) {
+    return;
+  }
+
+
+  let choice = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
+  let cpuSymbol = playerMark === "X" ? "O" : "X";
+
+  makeMove(choice, cpuSymbol);
+
+  plyr1Turn = true;
+  turn.innerHTML =
+    playerMark === "X"
+      ? `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`
+      : `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`;
+  turn.style.animation =
+    playerMark === "X" ? "pulseCross 2s infinite" : "pulseCircle 2s infinite";
+}
+
+// ---------- Player vs CPU ----------
 let playerVsCpu = () => {
-  boxes.forEach((box) => {
+  countTurn = 0;
+  plyr1Turn = playerMark === "X";
+
+  boxes.forEach((box, idx) => {
     box.addEventListener("click", () => {
-      if (!plyr1Turn) return; // only allow when it's player's turn
-      makeMove(box);
+      if (!plyr1Turn || box.disabled) return;
+
+      makeMove(idx, playerMark);
+
+      plyr1Turn = false;
 
       if (!winnerFound) {
-        cpuMove();
+        setTimeout(cpuMove, 500); // CPU moves after 0.5s
       }
     });
   });
+
+  // If player chose "O", CPU starts first
+  if (playerMark === "O") {
+    setTimeout(cpuMove, 500);
+  }
 };
 
-/* ------------------------
-   GAME MODE CHECK
------------------------- */
+// ---------- Mode Selection ----------
 if (CpubuttonPressed === "cpu") {
   playerVsCpu();
-}
-else if (PlayerbuttonPressed === "player") {
+} else if (PlayerbuttonPressed === "player") {
   playerVsPlayer();
 }
 
+// ---------- UI Adjustments ----------
 if (playerMark == "X") {
   player1MarkColor.classList.remove("player2ScoreColor");
   player2MarkColor.classList.remove("player1ScoreColor");
-}
-else {
+} else {
   player1MarkColor.classList.remove("player1ScoreColor");
   player2MarkColor.classList.remove("player2ScoreColor");
 }
 
-//Force to startfrom index.html
+// Force to start from index.html
 if (!sessionStorage.getItem("fromHome")) {
   window.location.replace("index.html");
 } else {
@@ -121,23 +151,22 @@ homeBtn.addEventListener("click", () => {
   resetGame();
 });
 
-/* ------------------------
-   (Your reset/winner/draw code stays the same)
------------------------- */
-
 function animateUnderline(position) {
-  underline.style.animation = 'none';
+  underline.style.animation = "none";
   underline.offsetHeight;
-  if ((position[0] === 0 && position[1] === 4 && position[2] === 8) ||
-    (position[0] === 2 && position[1] === 4 && position[2] === 6)) {
-    underline.style.animation = 'diagonalGrow 0.5s forwards';
-  }
-  else if ((position[0] === 0 && position[1] === 3 && position[2] === 6) ||
+  if (
+    (position[0] === 0 && position[1] === 4 && position[2] === 8) ||
+    (position[0] === 2 && position[1] === 4 && position[2] === 6)
+  ) {
+    underline.style.animation = "diagonalGrow 0.5s forwards";
+  } else if (
+    (position[0] === 0 && position[1] === 3 && position[2] === 6) ||
     (position[0] === 1 && position[1] === 4 && position[2] === 7) ||
-    (position[0] === 2 && position[1] === 5 && position[2] === 8)) {
-    underline.style.animation = 'verticalGrow 0.5s forwards';
+    (position[0] === 2 && position[1] === 5 && position[2] === 8)
+  ) {
+    underline.style.animation = "verticalGrow 0.5s forwards";
   } else {
-    underline.style.animation = 'underlineGrow 0.5s forwards';
+    underline.style.animation = "underlineGrow 0.5s forwards";
   }
 }
 
@@ -151,7 +180,7 @@ let resetGame = () => {
   plyr1Turn = true;
   showButton.classList.add("visiblity");
   showMsg.classList.add("visiblity");
-  boxes.forEach(box => {
+  boxes.forEach((box) => {
     box.classList.add("animation");
     box.innerHTML = "";
     box.disabled = false;
@@ -175,7 +204,7 @@ let resetGame = () => {
   underline.style.width = "0";
   underline.style.marginTop = "";
   underline.classList.remove("crossColor", "circleColor");
-  underline.style.animation = 'none';
+  underline.style.animation = "none";
 };
 
 resetBtn.addEventListener("click", () => {
@@ -205,24 +234,21 @@ let announceWinner = (pos1) => {
       underline.classList.add("crossColor");
       winnerText.innerHTML = `<h1><span>Player1</span> <span>Won!</span></h1>`;
       winnerText.classList.remove("lossColor", "drawColor");
-    }
-    else {
+    } else {
       player1Win = false;
       player2Win = true;
       underline.classList.add("crossColor");
       winnerText.innerHTML = `<h1><span>Player2</span> <span>Won!</span></h1>`;
       winnerText.classList.remove("lossColor", "drawColor");
     }
-  }
-  else if (pos1.includes("fa-circle")) {
+  } else if (pos1.includes("fa-circle")) {
     if (playerMark === "O") {
       player1Win = true;
       player2Win = false;
       underline.classList.add("circleColor");
       winnerText.innerHTML = `<h1><span>Player1</span> <span>Won!</span></h1>`;
       winnerText.classList.remove("winColor", "drawColor");
-    }
-    else {
+    } else {
       player2Win = true;
       player1Win = false;
       underline.classList.add("circleColor");
@@ -274,7 +300,7 @@ let continueRound = () => {
   underline.style.width = "0";
   underline.style.marginTop = "";
   underline.classList.remove("crossColor", "circleColor");
-  underline.style.animation = 'none';
+  underline.style.animation = "none";
   if (firstTurnPlyr1 == true) {
     plyr1Turn = false;
     firstTurnPlyr1 = false;
