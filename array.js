@@ -1,3 +1,9 @@
+let playerMoves = [];
+let cpuMoves = [];
+
+
+// Win : Any 2 and opponent dont have last one
+// Block : any 2 
 const winPosition = [
   [0, 1, 2],
   [3, 4, 5],
@@ -9,70 +15,150 @@ const winPosition = [
   [2, 5, 8]
 ];
 
+// Fork opportunities (create 2 winning threats at once)
+forks = [
+  // Opposite corners taken
+  [0, 8], // top-left & bottom-right
+  [2, 6], // top-right & bottom-left
+  // Corner + side that leads to fork
+  [0, 5], // top-left + mid-right
+  [2, 3], // top-right + mid-left
+  [6, 1], // bottom-left + top-middle
+  [8, 1], // bottom-right + top-middle
+];
 
-const trickPatterns = {
-  winPosition: [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8]
 
-    // Win : Any 2 and opponent dont have last one
-    // Block : any 2 
-  ],
+// Blocking opponent's tricks
+blockForks = [
+  [0, 8], // if opponent has opposite corners
+  [2, 6], // if opponent has opposite corners
+  [1, 3], // if opponent starts with two adjacent sides
 
-  // Fork opportunities (create 2 winning threats at once)
-  forks: [
-    // Opposite corners taken
-    [0, 8], // top-left & bottom-right
-    [2, 6], // top-right & bottom-left
-    // Corner + side that leads to fork
-    [0, 5], // top-left + mid-right
-    [2, 3], // top-right + mid-left
-    [6, 1], // bottom-left + top-middle
-    [8, 1], // bottom-right + top-middle
-  ],
+  // call blockForkMove
+];
 
-  // Blocking opponent's tricks
-  blockForks: [
-    [0, 8], // if opponent has opposite corners
-    [2, 6], // if opponent has opposite corners
-    [1, 3], // if opponent starts with two adjacent sides
+blockForkMove = [
+  //Random
+  [1],
+  [3],
+  [5],
+  [7]
+];
 
-    // call blockForkMove
-  ],
-  blockForkMove: [
-    //Random
-    [1],
-    [3],
-    [5],
-    [7]
-  ],
 
-  // Strong positions to prioritize
-  strategic: [
-    [4],       // center control
-    [0, 8], [2, 6],    // opposite corners
-    [0, 2, 8], // 2 corners + center (deadly trap setup)
-    [2, 4, 6], // diagonal + corner
-    [0, 4, 8], // diagonal + corner
+// Strong positions to prioritize
+strategic = [
+  [4],       // center control
+  [0, 8], [2, 6],    // opposite corners
+  [0, 2, 8], // 2 corners + center (deadly trap setup)
+  [2, 4, 6], // diagonal + corner
+  [0, 4, 8], // diagonal + corner
 
-    //Random
-  ],
-  EmptyBox: [
-    [0, 2, 6, 8],
-    [1, 3, 5, 7]
+  //Random
+];
 
-    // Random
-  ]
+
+
+EmptyBox = [
+  [0, 2, 6, 8],
+  [1, 3, 5, 7]
+
+  // Random
+];
+
+
+
+const checkDraw = () => {
+  let spaceEmpty = false;
+  let idx = 0;
+  while (spaceEmpty == false && idx <= 8) {
+    if (boxes[idx].innerHTML == "") {
+      spaceEmpty = true;
+    } else {
+      idx = idx + 1;
+    }
+  }
+  if (spaceEmpty == false && winnerFound == false) {
+    drawWin = true;
+    announceDraw();
+  }
 };
 
 
 
+
+let checkWinner = () => {
+  for (const position of winPosition) {
+    let pos1 = boxes[position[0]].innerHTML;
+    let pos2 = boxes[position[1]].innerHTML;
+    let pos3 = boxes[position[2]].innerHTML;
+    if (pos1 != "" && pos2 != "" && pos3 != "") {
+      if (pos1 == pos2 && pos1 == pos3) {
+        winnerFound = true;
+        announceWinner(pos1);
+        underline.classList.remove("visiblity");
+        if (position[0] == 0 && position[1] == 1 && position[2] == 2) {
+          underline.style.marginTop = "56px";
+        } else if (position[0] == 3 && position[1] == 4 && position[2] == 5) {
+          underline.style.marginTop = "161px";
+        } else if (position[0] == 6 && position[1] == 7 && position[2] == 8) {
+          underline.style.marginTop = "265px";
+        } else if (position[0] == 0 && position[1] == 4 && position[2] == 8) {
+          underline.style.width = "0";
+          underline.style.top = "50%";
+          underline.style.transform = "translate(-50%, -50%) rotate(45deg)";
+          underline.style.transformOrigin = "center";
+        } else if (position[0] == 2 && position[1] == 4 && position[2] == 6) {
+          underline.style.width = "0";
+          underline.style.top = "50%";
+          underline.style.transform = "translate(-50%, -50%) rotate(-45deg)";
+          underline.style.transformOrigin = "center";
+        } else if (position[0] == 0 && position[1] == 3 && position[2] == 6) {
+          underline.style.width = "0";
+          underline.style.top = "49%";
+          underline.style.left = "18.3%";
+          underline.style.transform = "translateX(-50%) rotate(90deg)";
+          underline.style.transformOrigin = "center";
+        } else if (position[0] == 1 && position[1] == 4 && position[2] == 7) {
+          underline.style.width = "0";
+          underline.style.top = "49%";
+          underline.style.transform = "translateX(-50%) rotate(90deg)";
+          underline.style.transformOrigin = "center";
+        } else if (position[0] == 2 && position[1] == 5 && position[2] == 8) {
+          underline.style.width = "0";
+          underline.style.top = "49%";
+          underline.style.left = "82%";
+          underline.style.transform = "translateX(-50%) rotate(90deg)";
+          underline.style.transformOrigin = "center";
+        }
+        setTimeout(() => {
+          animateUnderline(position);
+        }, 10);
+      }
+    }
+  }
+};
+
+
+
+
+let checkFork = () => {
+  boxes.forEach((box) => {
+    box.addEventListener("click", () => {
+      for (const fork of forks) {
+        let pos1 = boxes[fork[0]].innerHTML;
+        let pos2 = boxes[fork[1]].innerHTML;
+
+        if (pos1 != "" && pos2 == "") {
+          console.log("Fork available at: ", fork[1]);
+        }
+        else if (pos1 == "" && pos2 != "") {
+          console.log("Fork available at: ", fork[0]);
+        }
+      }
+    })
+  });
+}
 
 
 
