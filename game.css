@@ -94,7 +94,7 @@ header {
     display: flex;
     justify-content: space-evenly !important;
     align-items: center;
-    padding: 17px 30px;
+    padding: 17px 0px 17px 36px;
     background: var(--bg-header);
     box-shadow: 0 2px 10px var(--shadow-header);
     z-index: 10;
@@ -422,12 +422,12 @@ main {
     color: var(--text-white);
 }
 
-.player1ScoreColor{
+.player1ScoreColor {
     color: var(--text-cross);
     text-shadow: 0 0 8px var(--glow-cross);
 }
 
-.drawScoreColor{
+.drawScoreColor {
     color: var(--glow-draw);
     text-shadow: 0 0 8px var(--glow-draw);
 }
@@ -529,12 +529,14 @@ main {
         font-size: 29px;
     }
 
-    .resetbtn,.homebtn {
+    .resetbtn,
+    .homebtn {
         width: 50px;
         height: 50px;
     }
 
-    .resetbtn i , .homebtn i {
+    .resetbtn i,
+    .homebtn i {
         font-size: 18px;
-    }
+    }    
 }
