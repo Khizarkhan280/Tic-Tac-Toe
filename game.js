@@ -5,7 +5,7 @@ let showButton = document.querySelector(".buttons");
 let winnerText = document.querySelector(".resultMsg");
 let continueText = document.querySelector(".singleLine");
 let turn = document.querySelector(".turn");
-let plyr1Turn = true;
+let plyr1Turn;
 let firstTurnPlyr1 = true;
 let player1Win = false;
 let player2Win = false;
@@ -25,7 +25,99 @@ let playerMark = sessionStorage.getItem("playerMark") || "X";
 let CpubuttonPressed = sessionStorage.getItem("cpubutton");
 let PlayerbuttonPressed = sessionStorage.getItem("playerbutton");
 
+// Force to start from index.html
+
+if (!sessionStorage.getItem("fromHome")) {
+  window.location.replace("index.html");
+} else {
+  sessionStorage.removeItem("fromHome");
+}
+
+homeBtn.addEventListener("click", () => {
+  window.location.replace("index.html");
+  resetGame();
+});
+
+if (playerMark == "X") {
+  player1MarkColor.classList.remove("player2ScoreColor");
+  player2MarkColor.classList.remove("player1ScoreColor");
+  plyr1Turn = true;
+} else {
+  player1MarkColor.classList.remove("player1ScoreColor");
+  player2MarkColor.classList.remove("player2ScoreColor");
+  plyr1Turn = false;
+}
+
+const checkDraw = () => {
+  let spaceEmpty = false;
+  let idx = 0;
+  while (spaceEmpty == false && idx <= 8) {
+    if (boxes[idx].innerHTML == "") {
+      spaceEmpty = true;
+    } else {
+      idx = idx + 1;
+    }
+  }
+  if (spaceEmpty == false && winnerFound == false) {
+    drawWin = true;
+    announceDraw();
+  }
+};
+
+let checkWinner = () => {
+  for (const position of winPosition) {
+    let pos1 = boxes[position[0]].innerHTML;
+    let pos2 = boxes[position[1]].innerHTML;
+    let pos3 = boxes[position[2]].innerHTML;
+    if (pos1 != "" && pos2 != "" && pos3 != "") {
+      if (pos1 == pos2 && pos1 == pos3) {
+        winnerFound = true;
+        announceWinner(pos1);
+        underline.classList.remove("visiblity");
+        if (position[0] == 0 && position[1] == 1 && position[2] == 2) {
+          underline.style.marginTop = "56px";
+        } else if (position[0] == 3 && position[1] == 4 && position[2] == 5) {
+          underline.style.marginTop = "161px";
+        } else if (position[0] == 6 && position[1] == 7 && position[2] == 8) {
+          underline.style.marginTop = "265px";
+        } else if (position[0] == 0 && position[1] == 4 && position[2] == 8) {
+          underline.style.width = "0";
+          underline.style.top = "50%";
+          underline.style.transform = "translate(-50%, -50%) rotate(45deg)";
+          underline.style.transformOrigin = "center";
+        } else if (position[0] == 2 && position[1] == 4 && position[2] == 6) {
+          underline.style.width = "0";
+          underline.style.top = "50%";
+          underline.style.transform = "translate(-50%, -50%) rotate(-45deg)";
+          underline.style.transformOrigin = "center";
+        } else if (position[0] == 0 && position[1] == 3 && position[2] == 6) {
+          underline.style.width = "0";
+          underline.style.top = "49%";
+          underline.style.left = "18.3%";
+          underline.style.transform = "translateX(-50%) rotate(90deg)";
+          underline.style.transformOrigin = "center";
+        } else if (position[0] == 1 && position[1] == 4 && position[2] == 7) {
+          underline.style.width = "0";
+          underline.style.top = "49%";
+          underline.style.transform = "translateX(-50%) rotate(90deg)";
+          underline.style.transformOrigin = "center";
+        } else if (position[0] == 2 && position[1] == 5 && position[2] == 8) {
+          underline.style.width = "0";
+          underline.style.top = "49%";
+          underline.style.left = "82%";
+          underline.style.transform = "translateX(-50%) rotate(90deg)";
+          underline.style.transformOrigin = "center";
+        }
+        setTimeout(() => {
+          animateUnderline(position);
+        }, 10);
+      }
+    }
+  }
+};
+
 let playerVsPlayer = () => {
+  plyr1Turn = true;
   boxes.forEach((box) => {
     box.addEventListener("click", () => {
       if (box.disabled) return;
@@ -78,6 +170,7 @@ function cpuMove() {
       emptyBoxes.push(idx);
     }
   });
+  plyr1Turn = true;
 
   if (emptyBoxes.length === 0) {
     return;
@@ -88,7 +181,6 @@ function cpuMove() {
 
   makeMove(choice, cpuSymbol);
 
-  plyr1Turn = true;
   turn.innerHTML =
     playerMark === "X"
       ? `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`
@@ -97,19 +189,22 @@ function cpuMove() {
     playerMark === "X" ? "pulseCross 2s infinite" : "pulseCircle 2s infinite";
 }
 
-// ---------- Player vs CPU ----------
 
 let playerVsCpu = () => {
-  countTurn = 0;
-  plyr1Turn = playerMark === "X";
-
   boxes.forEach((box, idx) => {
     box.addEventListener("click", () => {
-      if (!plyr1Turn || box.disabled) return;
+      if (!plyr1Turn || box.disabled || winnerFound) return;
 
+      // Player move
       makeMove(idx, playerMark);
 
-      plyr1Turn = false;
+      plyr1Turn = false; // CPU's turn
+      turn.innerHTML =
+        playerMark === "X"
+          ? `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`
+          : `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`;
+      turn.style.animation =
+        playerMark === "X" ? "pulseCircle 2s infinite" : "pulseCross 2s infinite";
 
       if (!winnerFound) {
         setTimeout(cpuMove, 500); // CPU moves after 0.5s
@@ -117,12 +212,15 @@ let playerVsCpu = () => {
     });
   });
 
-  // If player chose "O", CPU starts first
-
+  // CPU starts first if player chose "O"
   if (playerMark === "O") {
+    plyr1Turn = false;
     setTimeout(cpuMove, 500);
   }
 };
+
+
+
 
 // ---------- Mode Selection ----------
 
@@ -132,28 +230,21 @@ if (CpubuttonPressed === "cpu") {
   playerVsPlayer();
 }
 
-// ---------- UI Adjustments ----------
 
-if (playerMark == "X") {
-  player1MarkColor.classList.remove("player2ScoreColor");
-  player2MarkColor.classList.remove("player1ScoreColor");
-} else {
-  player1MarkColor.classList.remove("player1ScoreColor");
-  player2MarkColor.classList.remove("player2ScoreColor");
-}
 
-// Force to start from index.html
 
-if (!sessionStorage.getItem("fromHome")) {
-  window.location.replace("index.html");
-} else {
-  sessionStorage.removeItem("fromHome");
-}
 
-homeBtn.addEventListener("click", () => {
-  window.location.replace("index.html");
-  resetGame();
-});
+
+
+
+
+
+
+
+
+
+
+
 
 function animateUnderline(position) {
   underline.style.animation = "none";
@@ -190,7 +281,7 @@ let resetGame = () => {
     box.innerHTML = "";
     box.disabled = false;
   });
-  
+
   winnerText.classList.add("winColor", "lossColor", "drawColor");
   turn.innerHTML = `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`;
   turn.style.animation = "pulseCross 2s infinite";

@@ -21,73 +21,7 @@ const forks = [
   [8, 1]
 ];
 
-const checkDraw = () => {
-  let spaceEmpty = false;
-  let idx = 0;
-  while (spaceEmpty == false && idx <= 8) {
-    if (boxes[idx].innerHTML == "") {
-      spaceEmpty = true;
-    } else {
-      idx = idx + 1;
-    }
-  }
-  if (spaceEmpty == false && winnerFound == false) {
-    drawWin = true;
-    announceDraw();
-  }
-};
 
-let checkWinner = () => {
-  for (const position of winPosition) {
-    let pos1 = boxes[position[0]].innerHTML;
-    let pos2 = boxes[position[1]].innerHTML;
-    let pos3 = boxes[position[2]].innerHTML;
-    if (pos1 != "" && pos2 != "" && pos3 != "") {
-      if (pos1 == pos2 && pos1 == pos3) {
-        winnerFound = true;
-        announceWinner(pos1);
-        underline.classList.remove("visiblity");
-        if (position[0] == 0 && position[1] == 1 && position[2] == 2) {
-          underline.style.marginTop = "56px";
-        } else if (position[0] == 3 && position[1] == 4 && position[2] == 5) {
-          underline.style.marginTop = "161px";
-        } else if (position[0] == 6 && position[1] == 7 && position[2] == 8) {
-          underline.style.marginTop = "265px";
-        } else if (position[0] == 0 && position[1] == 4 && position[2] == 8) {
-          underline.style.width = "0";
-          underline.style.top = "50%";
-          underline.style.transform = "translate(-50%, -50%) rotate(45deg)";
-          underline.style.transformOrigin = "center";
-        } else if (position[0] == 2 && position[1] == 4 && position[2] == 6) {
-          underline.style.width = "0";
-          underline.style.top = "50%";
-          underline.style.transform = "translate(-50%, -50%) rotate(-45deg)";
-          underline.style.transformOrigin = "center";
-        } else if (position[0] == 0 && position[1] == 3 && position[2] == 6) {
-          underline.style.width = "0";
-          underline.style.top = "49%";
-          underline.style.left = "18.3%";
-          underline.style.transform = "translateX(-50%) rotate(90deg)";
-          underline.style.transformOrigin = "center";
-        } else if (position[0] == 1 && position[1] == 4 && position[2] == 7) {
-          underline.style.width = "0";
-          underline.style.top = "49%";
-          underline.style.transform = "translateX(-50%) rotate(90deg)";
-          underline.style.transformOrigin = "center";
-        } else if (position[0] == 2 && position[1] == 5 && position[2] == 8) {
-          underline.style.width = "0";
-          underline.style.top = "49%";
-          underline.style.left = "82%";
-          underline.style.transform = "translateX(-50%) rotate(90deg)";
-          underline.style.transformOrigin = "center";
-        }
-        setTimeout(() => {
-          animateUnderline(position);
-        }, 10);
-      }
-    }
-  }
-};
 
 
 
