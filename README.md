@@ -26,11 +26,11 @@ It supports both **Player vs Player** and **Player vs CPU** modes with smart CPU
 
 ## 📸 Screenshots
 
-<img width="1364" height="601" alt="image" src="https://github.com/user-attachments/assets/be87a6a4-4294-498f-9b6a-1cb5d66592cf" />
+<img height="601" alt="image" src="https://github.com/user-attachments/assets/be87a6a4-4294-498f-9b6a-1cb5d66592cf" />
 
 <br>
 
-<img width="1366" height="603" alt="image" src="https://github.com/user-attachments/assets/b453b951-852b-4fa0-89e3-3e3614a8e9b6" />
+<img height="603" alt="image" src="https://github.com/user-attachments/assets/b453b951-852b-4fa0-89e3-3e3614a8e9b6" />
 
 <br>
 
