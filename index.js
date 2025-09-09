@@ -4,36 +4,11 @@ let vsCpuBtn = document.querySelector(".cpuBtn");
 let vsPlayerBtn = document.querySelector(".playerBtn");
 let crossMark = document.querySelector(".crossMark");
 let circleMark = document.querySelector(".circleMark");
+let buttonSelected = false;
 
 // Select player mark
 
 sessionStorage.setItem("playerMark", "");
-
-crossMark.addEventListener("click", () => {
-    sessionStorage.setItem("playerMark", "X");
-});
-circleMark.addEventListener("click", () => {
-    sessionStorage.setItem("playerMark", "O");
-});
-
-
-// New game vs CPU
-
-vsCpuBtn.addEventListener("click", () => {
-    sessionStorage.setItem("fromHome", "true");
-    sessionStorage.setItem("cpubutton", "cpu");
-    sessionStorage.removeItem("playerbutton");
-    window.location.href = "game.html";
-});
-
-// New game vs Plaer
-
-vsPlayerBtn.addEventListener("click", () => {
-    sessionStorage.setItem("fromHome", "true");
-    sessionStorage.setItem("playerbutton", "player");
-    sessionStorage.removeItem("cpubutton");
-    window.location.href = "game.html";
-});
 
 crossMark.addEventListener("click",
     () => {
@@ -42,6 +17,9 @@ crossMark.addEventListener("click",
         circleMark.classList.remove("homeCircleBtn");
         crossMark.classList.remove("crossHover");
         circleMark.classList.add("circleHover");
+        buttonSelected = true;
+        console.log(buttonSelected)
+
     }
 )
 
@@ -52,15 +30,49 @@ circleMark.addEventListener("click",
         crossMark.classList.remove("homeCrossBtn");
         circleMark.classList.remove("circleHover");
         crossMark.classList.add("crossHover");
+        buttonSelected = true;
     }
 )
 
-playerBtn.addEventListener("click",
-    () => {
-        sessionStorage.setItem("fromHome", "true");  // mark that user came from home
+
+// New game vs CPU
+
+
+vsCpuBtn.addEventListener("click", () => {
+    if (buttonSelected == false) {
+        alert("⚠️ Please select X or O before starting the game!");
+    } else {
+        sessionStorage.setItem("fromHome", "true");
+        sessionStorage.setItem("cpubutton", "cpu");
+        sessionStorage.removeItem("playerbutton");
+        window.location.href = "game.html";
+     }
+
+});
+
+
+
+// New game vs Player
+vsPlayerBtn.addEventListener("click", () => {
+    if (!buttonSelected) {
+        alert("⚠️ Please select X or O before starting the game!");
+    } else {
+        sessionStorage.setItem("fromHome", "true");
+        sessionStorage.setItem("playerbutton", "player");
+        sessionStorage.removeItem("cpubutton");
         window.location.href = "game.html";
     }
-)
+});
+
+
+
+// playerBtn.addEventListener("click",
+//     () => {
+//         sessionStorage.setItem("fromHome", "true");  // mark that user came from home
+//         window.location.href = "game.html";
+//     }
+// )
+
 
 // Delete history
 
