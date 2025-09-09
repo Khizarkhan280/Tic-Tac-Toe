@@ -147,22 +147,82 @@ let playerVsPlayer = () => {
 
 // ---------- NEW: CPU HELPER FUNCTIONS ----------
 
+let cpuWinCheck = () => {
+  for (const position of winPosition) {
+    let [pos1, pos2, pos3] = position;
+
+    // count CPU marks in this winning pattern
+    let count = 0;
+    if (cpuMoves.includes(pos1)) count++;
+    if (cpuMoves.includes(pos2)) count++;
+    if (cpuMoves.includes(pos3)) count++;
+
+    // find the missing spot
+    let missing = null;
+    if (!cpuMoves.includes(pos1) && !playerMoves.includes(pos1)) missing = pos1;
+    if (!cpuMoves.includes(pos2) && !playerMoves.includes(pos2)) missing = pos2;
+    if (!cpuMoves.includes(pos3) && !playerMoves.includes(pos3)) missing = pos3;
+
+    // condition: CPU has 2, third is empty
+    if (count === 2 && missing !== null) {
+      // console.log("CPU can win by playing:", missing, "in pattern:", position);
+      return missing; // return the winning move
+    }
+
+  }
+
+  return null; // no winning move found
+};
+
+
+let playerWinCheck = () => {
+  for (const position of winPosition) {
+    let [pos1, pos2, pos3] = position;
+
+    // count Player marks in this winning pattern
+    let count = 0;
+    if (playerMoves.includes(pos1)) count++;
+    if (playerMoves.includes(pos2)) count++;
+    if (playerMoves.includes(pos3)) count++;
+
+    // find the missing spot
+    let missing = null;
+    if (!playerMoves.includes(pos1) && !cpuMoves.includes(pos1)) missing = pos1;
+    if (!playerMoves.includes(pos2) && !cpuMoves.includes(pos2)) missing = pos2;
+    if (!playerMoves.includes(pos3) && !cpuMoves.includes(pos3)) missing = pos3;
+
+    // condition: Player has 2, third is empty
+    if (count === 2 && missing !== null) {
+      // console.log("Player can win by playing:", missing, "in pattern:", position);
+      return missing; // return the winning move
+    }
+
+  }
+
+  return null; // no winning move found
+};
+
 function makeMove(index, symbol) {
   let box = boxes[index];
+
   if (!box.disabled) {
     if (symbol === "X") {
       box.innerHTML = `<i class="fa-solid fa-xmark cross"></i>`;
     } else {
       box.innerHTML = `<i class="fa-regular fa-circle circle"></i>`;
     }
+
     box.disabled = true;
     box.classList.remove("animation");
     countTurn++;
+
     resetBtn.classList.add("resetAnimation");
+
     checkWinner();
     checkDraw();
   }
 }
+
 
 function cpuMove() {
   let emptyBoxes = [];
@@ -171,23 +231,29 @@ function cpuMove() {
       emptyBoxes.push(idx);
     }
   });
-  plyr1Turn = true;
 
-  if (emptyBoxes.length === 0) {
-    return;
+  if (emptyBoxes.length === 0 || winnerFound) return;
+
+  let cpuSymbol = playerMark === "X" ? "O" : "X";
+  let moveIndex = null;
+
+  // 1. Try to win
+  moveIndex = cpuWinCheck();
+  // 2. Else block player
+  if (moveIndex === null) {
+    moveIndex = playerWinCheck();
+  }
+  // 3. Else pick random
+  if (moveIndex === null) {
+    moveIndex = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
   }
 
-  let choice = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
-  let cpuSymbol = playerMark === "X" ? "O" : "X";
+  cpuMoves.push(moveIndex);
+  makeMove(moveIndex, cpuSymbol);
 
-  makeMove(choice, cpuSymbol);
-
-  turn.innerHTML =
-    playerMark === "X"
-      ? `<i class="fa-solid fa-xmark cross"></i> <span>Turn</span>`
-      : `<i class="fa-regular fa-circle circle"></i> <span>Turn</span>`;
-  turn.style.animation =
-    playerMark === "X" ? "pulseCross 2s infinite" : "pulseCircle 2s infinite";
+  // After CPU plays → back to player
+  plyr1Turn = true;
+  updateTurnIndicator();
 }
 
 function updateTurnIndicator() {
@@ -233,6 +299,8 @@ let playerVsCpu = () => {
 
       // Player move
       makeMove(idx, playerMark);
+      playerMoves.push(idx);
+      console.log(playerWinCheck())
 
       // Check if game is over after player's move
       if (!winnerFound && !drawWin) {
@@ -282,6 +350,8 @@ let resetGame = () => {
   plyr1Turn = true;
   showButton.classList.add("visiblity");
   showMsg.classList.add("visiblity");
+  cpuMoves = [];
+  playerMoves = [];
 
   boxes.forEach((box) => {
     box.classList.add("animation");
@@ -409,6 +479,9 @@ let announceDraw = () => {
 let continueRound = () => {
   showButton.classList.add("visiblity");
   showMsg.classList.add("visiblity");
+  cpuMoves = [];
+  playerMoves = [];
+
 
   for (const box of boxes) {
     box.classList.add("animation");
