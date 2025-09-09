@@ -1,25 +1,3 @@
-let playerMoves = [];
-let cpuMoves = [];
-
-const winPosition = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 4, 8],
-  [2, 4, 6],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8]
-];
-
-const forks = [
-  [0, 8], // opposite corners
-  [2, 6], // opposite corners
-  [0, 5],
-  [2, 3],
-  [6, 1],
-  [8, 1]
-];
 
 
 

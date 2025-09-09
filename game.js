@@ -21,10 +21,45 @@ let homeBtn = document.querySelector(".homebtn");
 let player1MarkColor = document.querySelector("#Player1MarkColor");
 let drawMarkColor = document.querySelector("#drawMarkColor");
 let player2MarkColor = document.querySelector("#Player2MarkColor");
-let playerMark = sessionStorage.getItem("playerMark") || "X";
+let playerMark = sessionStorage.getItem("playerMark");
 let CpubuttonPressed = sessionStorage.getItem("cpubutton");
 let PlayerbuttonPressed = sessionStorage.getItem("playerbutton");
 let cpuModeStarter = "player"; // Can be "player" or "cpu"
+let plyr2 = document.querySelector("#plyr2")
+let plyrVsPlyr ;
+
+if(playerMark == ""){
+  console.log("Nothing Selected")
+}
+
+let playerMoves = [];
+let cpuMoves = [];
+
+const winPosition = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8]
+];
+
+
+
+
+
+const forks = [
+  [0, 8], // opposite corners
+  [2, 6], // opposite corners
+  [0, 5],
+  [2, 3],
+  [6, 1],
+  [8, 1]
+];
+
+
 
 // Force to start from index.html
 
@@ -174,6 +209,57 @@ let cpuWinCheck = () => {
   return null; // no winning move found
 };
 
+let cpuForkCheck = () => {
+  for (const fork of forks) {
+    let [pos1, pos2] = fork;
+
+    // Case 1: CPU has pos1, pos2 is empty
+    if (cpuMoves.includes(pos1) && !cpuMoves.includes(pos2) && !playerMoves.includes(pos2)) {
+      return pos2;
+    }
+
+    // Case 2: CPU has pos2, pos1 is empty
+    if (cpuMoves.includes(pos2) && !cpuMoves.includes(pos1) && !playerMoves.includes(pos1)) {
+      return pos1;
+    }
+  }
+
+  return null; // no fork found
+};
+
+let useFork = () => {
+  // mapping of fork pairs -> best follow-up moves
+  const forkFollowUps = {
+    "0,8": [2, 6],   // after making 0 & 8, play 2 or 6 if free
+    "2,6": [0, 8],   // after making 2 & 6, play 0 or 8 if free
+    "0,5": [2],      // after making 0 & 5, play 2 if free
+    "2,3": [0],      // after making 2 & 3, play 0 if free
+    "6,1": [0],      // after making 6 & 1, play 0 if free
+    "8,1": [2]       // after making 8 & 1, play 2 if free
+  };
+
+  for (let fork of forks) {
+    let [pos1, pos2] = fork;
+
+    // Check if CPU has both positions in a fork
+    if (cpuMoves.includes(pos1) && cpuMoves.includes(pos2)) {
+      let key = `${pos1},${pos2}`;
+      let followUps = forkFollowUps[key];
+
+      if (followUps) {
+        // pick first available follow-up
+        for (let move of followUps) {
+          if (!cpuMoves.includes(move) && !playerMoves.includes(move)) {
+            return move; // return the move CPU should play
+          }
+        }
+      }
+    }
+  }
+
+  return null; // no fork follow-up found
+};
+
 
 let playerWinCheck = () => {
   for (const position of winPosition) {
@@ -239,11 +325,23 @@ function cpuMove() {
 
   // 1. Try to win
   moveIndex = cpuWinCheck();
-  // 2. Else block player
+
+  // 2. Block player
   if (moveIndex === null) {
     moveIndex = playerWinCheck();
   }
-  // 3. Else pick random
+
+  // 3. Use fork if already made
+  if (moveIndex === null) {
+    moveIndex = useFork();
+  }
+
+  // 4. Try to create a fork
+  if (moveIndex === null) {
+    moveIndex = cpuForkCheck();
+  }
+
+  // 5. Random move
   if (moveIndex === null) {
     moveIndex = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
   }
@@ -255,6 +353,8 @@ function cpuMove() {
   plyr1Turn = true;
   updateTurnIndicator();
 }
+
+
 
 function updateTurnIndicator() {
   if (plyr1Turn) {
@@ -277,6 +377,7 @@ function updateTurnIndicator() {
 
 
 let playerVsCpu = () => {
+  plyr2.innerHTML = "Cpu";
   // Determine who starts based on player mark and current round starter
   if (playerMark === "X") {
     plyr1Turn = (cpuModeStarter === "player");
@@ -318,8 +419,10 @@ let playerVsCpu = () => {
 
 if (CpubuttonPressed === "cpu") {
   playerVsCpu();
+  plyrVsPlyr = false;
 } else if (PlayerbuttonPressed === "player") {
   playerVsPlayer();
+  plyrVsPlyr = true;
 }
 function animateUnderline(position) {
   underline.style.animation = "none";
@@ -433,10 +536,14 @@ let announceWinner = (pos1) => {
       winnerText.innerHTML = `<h1><span>Player1</span> <span>Won!</span></h1>`;
       winnerText.classList.remove("lossColor", "drawColor");
     } else {
+      if(plyrVsPlyr == true){
+        winnerText.innerHTML = `<h1><span>Player2</span> <span>Won!</span></h1>`;
+      }else{
+        winnerText.innerHTML = `<h1><span>Cpu</span> <span>Won!</span></h1>`;        
+      }
       player1Win = false;
       player2Win = true;
       underline.classList.add("crossColor");
-      winnerText.innerHTML = `<h1><span>Player2</span> <span>Won!</span></h1>`;
       winnerText.classList.remove("lossColor", "drawColor");
     }
   } else if (pos1.includes("fa-circle")) {
@@ -446,12 +553,19 @@ let announceWinner = (pos1) => {
       underline.classList.add("circleColor");
       winnerText.innerHTML = `<h1><span>Player1</span> <span>Won!</span></h1>`;
       winnerText.classList.remove("winColor", "drawColor");
-    } else {
+    } else if (playerMark === "X")  {
+      if(plyrVsPlyr == true){
+        winnerText.innerHTML = `<h1><span>Player2</span> <span>Won!</span></h1>`;
+      }else{
+        winnerText.innerHTML = `<h1><span>Cpu</span> <span>Won!</span></h1>`;        
+      }
       player2Win = true;
       player1Win = false;
       underline.classList.add("circleColor");
-      winnerText.innerHTML = `<h1><span>Player2</span> <span>Won!</span></h1>`;
       winnerText.classList.remove("winColor", "drawColor");
+      
+    }else{
+      console.log("Hello")
     }
   }
 

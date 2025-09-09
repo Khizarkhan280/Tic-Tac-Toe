@@ -7,12 +7,15 @@ let circleMark = document.querySelector(".circleMark");
 
 // Select player mark
 
+sessionStorage.setItem("playerMark", "");
+
 crossMark.addEventListener("click", () => {
     sessionStorage.setItem("playerMark", "X");
 });
 circleMark.addEventListener("click", () => {
     sessionStorage.setItem("playerMark", "O");
 });
+
 
 // New game vs CPU
 
