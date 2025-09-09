@@ -1,211 +1,213 @@
 :root {
-            --bg-main: #1a2b33;
-            --bg-card: #1f3641;
-            --text-default: #a8bfc9;
-            --text-light: #dbecf4;
-            --text-dark: #192a25;
-            --accent-yellow: #f2b237;
-            --accent-teal: #31c4be;
-            --glow-yellow: rgba(242, 178, 55, 0.6);
-            --glow-teal: rgba(49, 196, 190, 0.6);
-            --shadow-dark: rgba(0, 0, 0, 0.3);
-        }
-        
-        body {
-            background: var(--bg-main);
-            color: var(--text-default);
-            min-height: 100dvh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: "Poppins", sans-serif;
-            padding: 20px;
-        }
-        
-        .homeContainer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 25px;
-            width: 100%;
-            max-width: 460px;
-        }
-        
-        .homeshapes {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-card);
-            border-radius: 15px;
-            padding: 12px 20px;
-            gap: 12px;
-            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.2);
-        }
-        
-        .cross {
-            color: var(--accent-yellow);
-            font-size: 32px;
-        }
-        
-        .circle {
-            color: var(--accent-teal);
-            font-size: 28px;
-        }
-        
-        .homeFirstContainer {
-            width: 100%;
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 10px 0 rgba(0, 0, 0, 0.2);
-        }
-        
-        .chooseMark {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            background: rgba(12, 19, 26, 0.4);
-            border-radius: 15px;
-            padding: 25px 20px;
-            width: 100%;
-        }
-        
-        .chooseMark p:first-child {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-light);
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-        }
-        
-        .chooseMark p:last-child {
-            font-size: 15px;
-            color: var(--text-default);
-            margin: 0;
-            font-weight: 500;
-            opacity: 0.8;
-        }
-        
-        .markSelector {
-            background: var(--bg-main);
-            border-radius: 10px;
-            padding: 8px;
-            width: 100%;
-            display: flex;
-            margin: 10px 0;
-            gap: 8px;
-        }
-        
-        .markBox {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 60px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 32px;
-            transition: all 0.3s ease;
-            color: var(--text-default);
-            background-color: #00000014;
-        }
-        
-        .crossHover:hover {
-            background: rgba(168, 191, 201, 0.05);
-        }
-        .circleHover:hover {
-            background: rgba(168, 191, 201, 0.05);
-        }
-        
-        .homeCrossBtn {
-            background: var(--text-default);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-        }
-        .homeCircleBtn {
-            background: var(--text-default);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-        }
-        
-        .homeCrossBtn .cross {
-            color: var(--bg-main);
-        }
-        
-        .homeCircleBtn .circle {
-            color: var(--bg-main);
-        }
-        
-        .homeSecondContainer {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 87%;
-        }
-        
-        .cpuBtn,
-        .playerBtn {
-            padding: 16px 0;
-            border-radius: 12px;
-            font-weight: 700;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 18px;
-            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.2);
-            border: none;
-            letter-spacing: 1.2px;
-        }
-        
-        .cpuBtn {
-            background: var(--accent-yellow);
-            color: var(--text-dark);
-        }
-        
-        .cpuBtn:hover {
-            background: #ffc960;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 0 rgba(0, 0, 0, 0.15);
-        }
-        
-        .cpuBtn:active {
-            transform: translateY(2px);
-            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
-        }
-        
-        .playerBtn {
-            background: var(--accent-teal);
-            color: var(--text-dark);
-        }
-        
-        .playerBtn:hover {
-            background: #38d9d3;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 0 rgba(0, 0, 0, 0.15);
-        }
-        
-        .playerBtn:active {
-            transform: translateY(2px);
-            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
-        }
-        
-        @media (max-width: 480px) {
-            .homeContainer {
-                gap: 30px;
-            }
-            
-            .homeFirstContainer {
-                padding: 25px 20px;
-            }
-            
-            .chooseMark {
-                padding: 20px 15px;
-            }
-            
-            .cpuBtn,
-            .playerBtn {
-                padding: 14px 0;
-                font-size: 16px;
-            }
-        }
+    --bg-main: #1a2b33;
+    --bg-card: #1f3641;
+    --text-default: #a8bfc9;
+    --text-light: #dbecf4;
+    --text-dark: #192a25;
+    --accent-yellow: #f2b237;
+    --accent-teal: #31c4be;
+    --glow-yellow: rgba(242, 178, 55, 0.6);
+    --glow-teal: rgba(49, 196, 190, 0.6);
+    --shadow-dark: rgba(0, 0, 0, 0.3);
+}
+
+body {
+    background: var(--bg-main);
+    color: var(--text-default);
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Poppins", sans-serif;
+    padding: 20px;
+}
+
+.homeContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    width: 100%;
+    max-width: 460px;
+}
+
+.homeshapes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-card);
+    border-radius: 15px;
+    padding: 12px 20px;
+    gap: 12px;
+    box-shadow: 0 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.cross {
+    color: var(--accent-yellow);
+    font-size: 32px;
+}
+
+.circle {
+    color: var(--accent-teal);
+    font-size: 28px;
+}
+
+.homeFirstContainer {
+    width: 100%;
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.chooseMark {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    background: rgba(12, 19, 26, 0.4);
+    border-radius: 15px;
+    padding: 25px 20px;
+    width: 100%;
+}
+
+.chooseMark p:first-child {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-light);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+}
+
+.chooseMark p:last-child {
+    font-size: 15px;
+    color: var(--text-default);
+    margin: 0;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.markSelector {
+    background: var(--bg-main);
+    border-radius: 10px;
+    padding: 8px;
+    width: 100%;
+    display: flex;
+    margin: 10px 0;
+    gap: 8px;
+}
+
+.markBox {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 32px;
+    transition: all 0.3s ease;
+    color: var(--text-default);
+    background-color: #00000014;
+}
+
+.crossHover:hover {
+    background: rgba(168, 191, 201, 0.05);
+}
+
+.circleHover:hover {
+    background: rgba(168, 191, 201, 0.05);
+}
+
+.homeCrossBtn {
+    background: var(--text-default);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.homeCircleBtn {
+    background: var(--text-default);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.homeCrossBtn .cross {
+    color: var(--bg-main);
+}
+
+.homeCircleBtn .circle {
+    color: var(--bg-main);
+}
+
+.homeSecondContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 87%;
+}
+
+.cpuBtn,
+.playerBtn {
+    padding: 16px 0;
+    border-radius: 12px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 18px;
+    box-shadow: 0 8px 0 rgba(0, 0, 0, 0.2);
+    border: none;
+    letter-spacing: 1.2px;
+}
+
+.cpuBtn {
+    background: var(--accent-yellow);
+    color: var(--text-dark);
+}
+
+.cpuBtn:hover {
+    background: #ffc960;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 0 rgba(0, 0, 0, 0.15);
+}
+
+.cpuBtn:active {
+    transform: translateY(2px);
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.playerBtn {
+    background: var(--accent-teal);
+    color: var(--text-dark);
+}
+
+.playerBtn:hover {
+    background: #38d9d3;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 0 rgba(0, 0, 0, 0.15);
+}
+
+.playerBtn:active {
+    transform: translateY(2px);
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 480px) {
+    .homeContainer {
+        gap: 30px;
+    }
+
+    .homeFirstContainer {
+        padding: 25px 20px;
+    }
+
+    .chooseMark {
+        padding: 20px 15px;
+    }
+
+    .cpuBtn,
+    .playerBtn {
+        padding: 14px 0;
+        font-size: 16px;
+    }
+}

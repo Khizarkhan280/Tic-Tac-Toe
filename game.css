@@ -537,5 +537,13 @@ main {
     .resetbtn i,
     .homebtn i {
         font-size: 18px;
-    }    
+    }
+}
+
+@media (max-width: 500px) {
+    .resetAnimation:hover {
+        background: var(--bg-resetbtn);
+        transform: none;
+        box-shadow: none;
+    }
 }

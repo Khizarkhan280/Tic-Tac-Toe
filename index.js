@@ -6,8 +6,6 @@ let crossMark = document.querySelector(".crossMark");
 let circleMark = document.querySelector(".circleMark");
 let buttonSelected = false;
 
-// Select player mark
-
 sessionStorage.setItem("playerMark", "");
 
 crossMark.addEventListener("click",
@@ -34,10 +32,6 @@ circleMark.addEventListener("click",
     }
 )
 
-
-// New game vs CPU
-
-
 vsCpuBtn.addEventListener("click", () => {
     if (buttonSelected == false) {
         alert("⚠️ Please select X or O before starting the game!");
@@ -50,9 +44,6 @@ vsCpuBtn.addEventListener("click", () => {
 
 });
 
-
-
-// New game vs Player
 vsPlayerBtn.addEventListener("click", () => {
     if (!buttonSelected) {
         alert("⚠️ Please select X or O before starting the game!");
@@ -63,16 +54,6 @@ vsPlayerBtn.addEventListener("click", () => {
         window.location.href = "game.html";
     }
 });
-
-
-
-// playerBtn.addEventListener("click",
-//     () => {
-//         sessionStorage.setItem("fromHome", "true");  // mark that user came from home
-//         window.location.href = "game.html";
-//     }
-// )
-
 
 // Delete history
 
