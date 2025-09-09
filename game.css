@@ -540,8 +540,9 @@ main {
     }
 }
 
-@media (max-width: 500px) {
-    .resetAnimation:hover {
+@media (hover: none) and (pointer: coarse) {
+  /* styles for touch screens */
+  .resetAnimation:hover {
         background: var(--bg-resetbtn);
         transform: none;
         box-shadow: none;
